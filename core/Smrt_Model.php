@@ -1,4 +1,4 @@
-
+<?php
 
 /**
  * class Smrt_Model

@@ -78,6 +78,17 @@ class Smrt_Registry
 	public static function getRequest( ) {
 		return self::getInstance()->get("request");
 	} // end of member function getRequest
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getParam( $key ) {
+		return self::getInstance()->get("request")->getParam( $key );
+	} // end of member function getRequest	
 
 	/**
 	 * 
