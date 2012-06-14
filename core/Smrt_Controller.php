@@ -81,19 +81,22 @@ abstract class Smrt_Controller
 		return false;
 	} // end of member function getParam	
 
+
 	/**
 	 * 
-	 *
+	 * Перенаправляем запросы в Smrt_View. 
+	 * Любые действия в action, связанные с представлением, установкой шаблонов и других тегов - отлавливаются тут
+	 * 
 	 * @return 
-	 * @access protected
+	 * @access public
 	 */
-	protected function setView( ) {
-		$tpl = SMRT_APP_PATH."/views/".$tpl.".tpl";
-		$this->view->setView($view);
-	} // end of member function setView
-
-
-
+	public function __call( $method, $args=array() ) {
+		if (!is_callable(array($this->view, $method))){
+			throw new \smrt\core\SmrtException("No method error");
+		}
+				
+		call_user_func_array(array($this->view, $method), $args);
+	} // end of member function __call
 
 } // end of Smrt_Controller
 

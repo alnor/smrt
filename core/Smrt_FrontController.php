@@ -90,13 +90,13 @@ class Smrt_FrontController
 		$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
 		
 		if (!file_exists($filepath)){
-			throw new \smrt\core\SmrtException(Smrt_LangCommon::get("error", "lost_path"));
+			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_path"));
 		}
 		
 		require_once($filepath);
 		
 		if (!class_exists($class)){
-			throw new \smrt\core\SmrtException(Smrt_LangCommon::get("error", "lost_class"));
+			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_class"));
 		}
 		
 		$this->controller = new $class();
@@ -104,6 +104,7 @@ class Smrt_FrontController
 		try{
 			print($this->invoke());
 		}catch(\smrt\core\SmrtException $e){
+			print($e->getMessage());
 		}
 	} // end of member function dispatch
 
