@@ -17,7 +17,16 @@ class ProjectsController extends Smrt_Controller
 
 
 	function index(){
+		
 		$this->setTitle("Title for first page");
+		
+		$menu = array("/projects/result"=>"Result", "/users"=>"Users");
+		
+		$this->set("menu", $menu);
+		
+		$test = $this->Project->getTest();
+
+		$this->set("{test}", $test);
 	}
 	
 	function result(){

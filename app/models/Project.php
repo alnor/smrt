@@ -3,10 +3,10 @@
 namespace smrt\app\models;
 
 /**
- * class Smrt_Model
+ * class UsersController
  * 
  */
-class Smrt_Model
+class Project extends Smrt_Model
 {
 
 	/** Aggregations: */
@@ -16,9 +16,12 @@ class Smrt_Model
 	 /*** Attributes: ***/
 
 
+	function getTest(){
+		return 222;
+	}
 
 
 
 
-} // end of Smrt_Model
+} // end of UsersController
 ?>

@@ -97,6 +97,40 @@ abstract class Smrt_Controller
 				
 		call_user_func_array(array($this->view, $method), $args);
 	} // end of member function __call
+	
+	/**
+	 * 
+	 * Перенаправляем запросы в Smrt_View. 
+	 * Любые действия в action, связанные с представлением, установкой шаблонов и других тегов - отлавливаются тут
+	 * 
+	 * @return 
+	 * @access public
+	 */
+	public function __get( $property ) {
+		
+		$class = "\\smrt\\app\\models\\".ucfirst($property);
+		
+		if (isset($this->$class)){
+			return $this->$class;
+		}
+	
+		$filepath = SMRT_APP_PATH."/models/".(ucfirst($property)).".php";
+		
+		if (!file_exists($filepath)){
+			throw new \smrt\core\SmrtException(111);
+		}
+		
+		require_once $filepath;
+		
+		if (!class_exists($class)){
+			throw new \smrt\core\SmrtException(222);
+		}
+		
+		$this->$class = new $class();
+		
+		return $this->$class;
+	} // end of member function __get	
+	
 
 } // end of Smrt_Controller
 
