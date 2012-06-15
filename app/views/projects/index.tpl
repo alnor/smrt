@@ -3,4 +3,11 @@
 	<input type="text" name="form[name]" />
 	<input type="submit" value="Ok" />
 </form>
-{test}
+
+<?php 
+
+	foreach($this->var["test"] as $k=>$v){
+		echo "ID:", $v["id"], "<br />";
+		echo "Name:", $v["name"], "<br />";
+	}
+?>

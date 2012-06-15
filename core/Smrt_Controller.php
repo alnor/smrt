@@ -98,6 +98,7 @@ abstract class Smrt_Controller
 		call_user_func_array(array($this->view, $method), $args);
 	} // end of member function __call
 	
+	
 	/**
 	 * 
 	 * Перенаправляем запросы в Smrt_View. 

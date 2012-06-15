@@ -30,6 +30,20 @@ class Smrt_Registry
 	 */
 	private static $values=array();	
 	
+	/**
+	 * 
+	 * @static
+	 * @access private
+	 */
+	private static $dsn;	
+	
+	/**
+	 * 
+	 * @static
+	 * @access private
+	 */
+	private static $connection;	
+	
 
 	/**
 	 * 
@@ -57,6 +71,35 @@ class Smrt_Registry
 
 	/**
 	 * 
+	 *	
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getConnection( ) {
+		if (!self::$connection){
+			self::getInstance()->setConnection();
+		}
+		
+		return self::$connection;
+	} // end of member function getConnection
+	
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	private static function setConnection( ) {
+		$db_config = \smrt\config\DBConfig::get();
+		self::$dsn = $db_config["driver"].":dbname=".$db_config["database"].";host=".$db_config["host"];
+		self::$connection = new \PDO(self::$dsn, $db_config["login"], $db_config["password"]);
+	} // end of member function getConnection
+	
+	/**
+	 * 
 	 *
 	 * @param Smrt_Request request 
 
@@ -66,8 +109,8 @@ class Smrt_Registry
 	 */
 	public static function setRequest( \smrt\core\Smrt_Request $request ) {
 		return self::getInstance()->set("request", $request);
-	} // end of member function setRequest
-
+	} // end of member function setRequest	
+	
 	/**
 	 * 
 	 *

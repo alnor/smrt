@@ -20,6 +20,12 @@ class Smrt_View
 	 * @access private
 	 */
 	private $var=array();
+	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $tag=array();	
 
 	/**
 	 * 
@@ -82,7 +88,7 @@ class Smrt_View
 											$output);
 		}
 
-		foreach($this->var as $key=>$value){
+		foreach($this->tag as $key=>$value){
 			$output = str_replace($key, $value, $output);
 		}
 		
@@ -155,7 +161,7 @@ class Smrt_View
 	 * @access public
 	 */
 	public function setTitle( $value ) {
-		$this->var['{title}'] = $value;
+		$this->tag['{title}'] = $value;
 	} // end of member function set	
 	
 	/**
@@ -168,6 +174,15 @@ class Smrt_View
 		$this->var[$key] = $value;
 	} // end of member function set
 
+	/**
+	 * Устанавливаем таги 
+	 * представления
+	 * @return 
+	 * @access public
+	 */
+	public function setTag( $key, $value ) {
+		$this->tag[$key] = $value;
+	} // end of member function set	
 
 	/**
 	 * Устанавливаем элементы
