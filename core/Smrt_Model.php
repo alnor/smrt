@@ -16,7 +16,15 @@ class Smrt_Model
 	 /*** Attributes: ***/
 
 
+	/**
+	 * 
+	 * Поиск
+	 * @return 
+	 * @access public
+	 */
+	public function find( $conditions ) {
 
+	} // end of member function find
 
 
 

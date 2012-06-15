@@ -62,11 +62,25 @@ class Smrt_View
 	 * @return 
 	 * @access public
 	 */
-	public function render( ) {
+	public function render( $action=null ) {
+		
+		if (!is_null($action)){
+			$this->setView( $action );
+		}
+		
 		$this->loadTheme();
 		$this->loadTemplate();
-		
-		$output = str_replace('{content}', $this->view, $this->theme);		
+
+		$output = str_replace('{content}', $this->view, $this->theme);	
+
+		if (strpos($output, "[element=")){
+			$currentObject=$this;
+			$output = preg_replace_callback("/\[element=(\w+)\]/", 
+											function($matches) use (&$currentObject){
+												return $currentObject->getElement($matches[1]);
+											},
+											$output);
+		}
 
 		foreach($this->var as $key=>$value){
 			$output = str_replace($key, $value, $output);
@@ -83,7 +97,13 @@ class Smrt_View
 	 */
 	public function loadTemplate( ) {
 		ob_start();
+		
+		if (!file_exists($this->tpl)){
+			throw new \smrt\core\SmrtException("No action");
+		}
+		
 		require_once $this->tpl;
+		
 		$this->view =ob_get_contents();
 		ob_end_clean();	
 	} // end of member function loadTemplate
@@ -97,7 +117,13 @@ class Smrt_View
 	 */
 	public function loadTheme( ) {
 		ob_start();
+		
+		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeName.".tpl")){
+			throw new \smrt\core\SmrtException("No theme");
+		}		
+		
 		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeName.".tpl";
+		
 		$this->theme =ob_get_contents();
 		ob_end_clean();	
 	} // end of member function loadMainTemplate	
@@ -119,7 +145,7 @@ class Smrt_View
 	 * @access public
 	 */
 	public function setView( $tpl ) {
-		$view = SMRT_APP_PATH."/views/".$tpl.".tpl";		
+		$view = SMRT_APP_PATH."/views/".(\smrt\core\Smrt_Registry::getParam("controller"))."/".$tpl.".tpl";		
 		$this->tpl = $view;
 	} // end of member function setView
 
@@ -143,7 +169,25 @@ class Smrt_View
 	} // end of member function set
 
 
+	/**
+	 * Устанавливаем элементы
+	 * @return 
+	 * @access public
+	 */
+	public function getElement( $element ) {
+		ob_start();
 
+		if (!file_exists(SMRT_APP_PATH."/views/elements/".$element.".tpl")){
+			throw new \smrt\core\SmrtException("No element");
+		}		
+		
+		require_once SMRT_APP_PATH."/views/elements/".$element.".tpl";
+		
+		$ret =ob_get_contents();
+		ob_end_clean();	
+		
+		return $ret;
+	} // end of member function getElement
 
 
 } // end of Smrt_View

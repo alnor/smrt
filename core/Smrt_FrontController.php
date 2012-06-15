@@ -4,6 +4,7 @@ require_once 'Smrt_Registry.php';
 require_once 'Smrt_Request.php';
 require_once 'Smrt_Model.php';
 require_once 'Smrt_Controller.php';
+require_once 'Smrt_View.php';
 require_once 'Smrt_Exception.php';
 
 /**

@@ -14,7 +14,7 @@
 	
 	<ul>
 	<?php 
-		foreach($this->var["menu"] as $key=>$val){
+		foreach($this->var["menu1"] as $key=>$val){
 			echo "<li><a href='".$key."'>".$val."</a></li>";
 		}
 	?>
@@ -23,6 +23,7 @@
 	<hr />
 	
 	{content}
-	
+	<hr />
+	[element=menu]
 </body>
 </html>

@@ -22,10 +22,9 @@ class ProjectsController extends Smrt_Controller
 		
 		$menu = array("/projects/result"=>"Result", "/users"=>"Users");
 		
-		$this->set("menu", $menu);
-		
 		$test = $this->Project->getTest();
-
+		
+		$this->set("menu1", $menu);
 		$this->set("{test}", $test);
 	}
 	

@@ -1,0 +1,1 @@
+/home/alex/git/smrt/app/views/projects/index.tpl
