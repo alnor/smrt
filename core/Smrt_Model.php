@@ -44,6 +44,7 @@ abstract class Smrt_Model
 	public function __construct(  ) {
 		$this->db 		= \smrt\core\Smrt_Registry::getConnection();
 		$this->table 	= \smrt\core\Smrt_Registry::getParam("controller");
+		$this->relation	= $this->getRelation();
 	} // end of member function __construct	
 
 	

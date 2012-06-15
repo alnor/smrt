@@ -16,7 +16,7 @@ class Project extends Smrt_Model
 	 /*** Attributes: ***/
 
 
-	function setRelation(){
+	function getRelation(){
 		return array(	"type"	=>	"hasOne",
 						"model"	=>	"User"
 					);

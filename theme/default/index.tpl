@@ -10,20 +10,19 @@
 <body>
 	<h1>Index tpl</h1>
 	
-	<hr />
-	
-	<ul>
-	<?php 
-		foreach($this->var["menu1"] as $key=>$val){
-			echo "<li><a href='".$key."'>".$val."</a></li>";
-		}
-	?>
-	</ul>
+	[element=menu]
 		
 	<hr />
 	
-	{content}
+	<div class="left_block">
+		[element=left_block]
+	</div>
+	
+	<div class="content">
+		{content}
+	</div>
+	
 	<hr />
-	[element=menu]
+
 </body>
 </html>

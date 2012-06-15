@@ -31,14 +31,19 @@ class ProjectsController extends Smrt_Controller
 	}
 	
 	function result(){
+		//$this->setView("index");
+		$this->setTheme("my", "second");
 		
-		$this->setTheme("second");
+		$form = $this->post("form");
 		
-		if ($this->post("form")){
-			$form = $this->post("form");
+		if (!empty($form["test"])){
+			print_r($form);
 			$this->setTag("{test}", $form["test"]);
 			$this->setTag("{name}", $form["name"]);
-		}	
+			
+		} else {
+			$this->set("message", "Пустые данные формы");
+		}
 		
 		$this->setTitle("Title for result page");
 

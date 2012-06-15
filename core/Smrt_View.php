@@ -47,6 +47,12 @@ class Smrt_View
 	public $themeName="index";
 	
 	/**
+	 * Папка шаблона по умолчанию
+	 * @access public
+	 */
+	public $themeFolder="default";	
+	
+	/**
 	 * Содержимое шаблона по умолчанию
 	 * @access public
 	 */
@@ -124,11 +130,11 @@ class Smrt_View
 	public function loadTheme( ) {
 		ob_start();
 		
-		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeName.".tpl")){
+		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl")){
 			throw new \smrt\core\SmrtException("No theme");
 		}		
 		
-		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeName.".tpl";
+		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
 		
 		$this->theme =ob_get_contents();
 		ob_end_clean();	
@@ -140,8 +146,9 @@ class Smrt_View
 	 * @return 
 	 * @access public
 	 */
-	public function setTheme( $name ) {
-		$this->themeName = $name;
+	public function setTheme( $folder, $name ) {
+		$this->themeFolder 	= $folder;
+		$this->themeName 	= $name;
 	} // end of member function setMainTemplate	
 	
 	/**
@@ -192,11 +199,11 @@ class Smrt_View
 	public function getElement( $element ) {
 		ob_start();
 
-		if (!file_exists(SMRT_APP_PATH."/views/elements/".$element.".tpl")){
+		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/elements/".$element.".tpl")){
 			throw new \smrt\core\SmrtException("No element");
 		}		
 		
-		require_once SMRT_APP_PATH."/views/elements/".$element.".tpl";
+		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/elements/".$element.".tpl";
 		
 		$ret =ob_get_contents();
 		ob_end_clean();	

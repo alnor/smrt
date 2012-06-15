@@ -74,6 +74,7 @@ abstract class Smrt_Controller
 	 */
 	public function post( $key ) {
 		$post = \smrt\core\Smrt_Registry::getParam($key);
+		
 		if (!is_null($post)){
 			return $post;
 		}

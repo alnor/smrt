@@ -93,9 +93,9 @@ class Smrt_Registry
 	 * @access public
 	 */
 	private static function setConnection( ) {
-		$db_config = \smrt\config\DBConfig::get();
-		self::$dsn = $db_config["driver"].":dbname=".$db_config["database"].";host=".$db_config["host"];
-		self::$connection = new \PDO(self::$dsn, $db_config["login"], $db_config["password"]);
+		$db_config 			= \smrt\config\DBConfig::get();
+		self::$dsn 			= $db_config["driver"].":dbname=".$db_config["database"].";host=".$db_config["host"];
+		self::$connection 	= new \PDO(self::$dsn, $db_config["login"], $db_config["password"]);
 	} // end of member function getConnection
 	
 	/**
