@@ -23,10 +23,13 @@ class ProjectsController extends Smrt_Controller
 		$menu = array("/projects/result"=>"Result", "/users"=>"Users");
 		
 		$test = $this->Project->findByName("Semcrm");
-		$test1 = $this->Project->update(array("name"=>"Smrt_sec"), array("id"=>1));
+		//$test1 = $this->Project->update(array("name"=>"Smrt_sec"), array("id"=>1));
+		
+		//$a = $this->render("result");
 
 		$this->set("menu", $menu);
 		$this->set("test", $test);
+		//$this->setTag("{a}", $a);
 
 	}
 	
@@ -36,8 +39,8 @@ class ProjectsController extends Smrt_Controller
 		
 		$form = $this->post("form");
 		
-		if (!empty($form["test"])){
-			print_r($form);
+		if ($form){
+			
 			$this->setTag("{test}", $form["test"]);
 			$this->setTag("{name}", $form["name"]);
 			
@@ -48,6 +51,23 @@ class ProjectsController extends Smrt_Controller
 		$this->setTitle("Title for result page");
 
 	}	
+	
+	function seo(){
+		$projects = $this->Project->find(array("service_id"=>1));
+		print_r($projects);
+	}	
+	
+	function new_project(){
+		$services = $this->Service->find();
+		$this->set("services", $services);
+		
+		$form = $this->post("form");
+		
+		if ($form){
+			$this->Project->save($form);
+			$this->set("message", "Все удачно чувак");
+		}
+	}
 
 	
 } // end of ProjectsController

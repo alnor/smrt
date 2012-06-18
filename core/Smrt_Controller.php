@@ -31,9 +31,13 @@ abstract class Smrt_Controller
 	 * @access public
 	 */
 	public function __construct( ) {
+
+		\smrt\core\Smrt_Registry::setController( $this );
+				
 		$controller = \smrt\core\Smrt_Registry::getParam("controller");
 		$action 	= \smrt\core\Smrt_Registry::getParam("action");
 		$tpl 		= SMRT_APP_PATH."/views/".$controller."/".$action.".tpl";
+		
 		$this->view = new \smrt\core\Smrt_View( $tpl );
 	} // end of member function __construct
 
@@ -73,7 +77,7 @@ abstract class Smrt_Controller
 	 * @access public
 	 */
 	public function post( $key ) {
-		$post = \smrt\core\Smrt_Registry::getParam($key);
+		$post = \smrt\core\Smrt_Registry::getFormParam($key);
 		
 		if (!is_null($post)){
 			return $post;
@@ -96,7 +100,7 @@ abstract class Smrt_Controller
 			throw new \smrt\core\SmrtException("No method error");
 		}
 				
-		call_user_func_array(array($this->view, $method), $args);
+		return call_user_func_array(array($this->view, $method), $args);
 	} // end of member function __call
 	
 	
@@ -128,7 +132,8 @@ abstract class Smrt_Controller
 			throw new \smrt\core\SmrtException(222);
 		}
 		
-		$this->$class = new $class();
+		$table =  strtolower($property)."s";
+		$this->$class = new $class( $table );
 		
 		return $this->$class;
 	} // end of member function __get	

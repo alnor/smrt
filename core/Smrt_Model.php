@@ -41,9 +41,12 @@ abstract class Smrt_Model
 	 * @return 
 	 * @access public
 	 */
-	public function __construct(  ) {
+	public function __construct( $table ) {
+		
+		\smrt\core\Smrt_Registry::setModel( $this );
+		
 		$this->db 		= \smrt\core\Smrt_Registry::getConnection();
-		$this->table 	= \smrt\core\Smrt_Registry::getParam("controller");
+		$this->table 	= $table;
 		$this->relation	= $this->getRelation();
 	} // end of member function __construct	
 
@@ -78,7 +81,7 @@ abstract class Smrt_Model
 	
 	/**
 	 * 
-	 * Поиск
+	 * Update
 	 * @return 
 	 * @access public
 	 */
@@ -118,9 +121,40 @@ abstract class Smrt_Model
 		}		
 
 		return $this->execute( $query, $data);
-	} // end of member function find	
+	} // end of member function update	
 	
+	/**
+	 * 
+	 * Поиск
+	 * @return 
+	 * @access public
+	 */
+	public function save( $fields ) {
+		
+		$query = "INSERT INTO ".$this->table." ( ";
+		
+		$data=array();
+		
+		if (!empty($fields)){
+			$keys = array_keys($fields);
+			
+			$query.= join(" , ", $keys);
+			$query.= " ) VALUES (";
+			
+			$values=array();
+			
+			foreach($keys as $key=>$value){
+				$values[] = ":".$value;
+				$data[":".$value] = $fields[$value];
+			}
+			
+			$query.= join(" , ", $values);
+			$query.= " ) ";
+		}		
 
+		return $this->execute( $query, $data);
+	} // end of member function save	
+	
 	/**
 	 * 
 	 * Магический поиск

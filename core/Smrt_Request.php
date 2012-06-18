@@ -22,7 +22,12 @@ class Smrt_Request
 	 */
 	private $params;
 
-
+	/**
+	 * 
+	 * @access private
+	 */
+	private $formParams;
+	
 	/**
 	 * 
 	 *
@@ -59,7 +64,20 @@ class Smrt_Request
 	} // end of member function getParam
 
 
-
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function getFormParam( $key ) {
+		if (isset($this->formParams[$key])){
+			return $this->formParams[$key];
+		}
+		
+		return null;
+	} // end of member function getParam
+	
 	/**
 	 * 
 	 *
@@ -68,6 +86,7 @@ class Smrt_Request
 	 */
 	private function init( ) {
 		$this->params = $_REQUEST;
+		$this->formParams = $_POST;
 	} // end of member function init
 
 

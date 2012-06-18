@@ -1,6 +1,6 @@
 <?php 
 
-if ($this->var["message"]) { 
+if (isset($this->var["message"])) { 
 	
 	echo $this->var["message"];
 

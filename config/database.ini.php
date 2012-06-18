@@ -27,8 +27,8 @@ class DBConfig
 		return array(	'driver' => 'mysql',
 						'persistent' => false,
 						'host' => 'localhost',
-						'login' => 'semcrm',
-						'password' => 'semcrm12',
+						'login' => 'root',
+						'password' => 'root12',
 						'database' => 'smrt',
 						'prefix' => '',
 			);

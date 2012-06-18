@@ -32,6 +32,12 @@ class Smrt_View
 	 * @access private
 	 */
 	private $tpl;
+	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $currentController;	
 
 	/**
 	 * Результат обработки
@@ -65,7 +71,11 @@ class Smrt_View
 	 * @access public
 	 */
 	public function __construct( $tpl ) {
-		$this->tpl = $tpl;
+		
+		\smrt\core\Smrt_Registry::setView( $this );
+				
+		$this->tpl				 = $tpl;
+		$this->currentController = \smrt\core\Smrt_Registry::getController();
 	} // end of member function __construct
 
 	/**
@@ -78,6 +88,7 @@ class Smrt_View
 		
 		if (!is_null($action)){
 			$this->setView( $action );
+			$this->currentController->$action();
 		}
 		
 		$this->loadTheme();

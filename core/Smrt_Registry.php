@@ -96,6 +96,7 @@ class Smrt_Registry
 		$db_config 			= \smrt\config\DBConfig::get();
 		self::$dsn 			= $db_config["driver"].":dbname=".$db_config["database"].";host=".$db_config["host"];
 		self::$connection 	= new \PDO(self::$dsn, $db_config["login"], $db_config["password"]);
+		self::$connection->exec('SET NAMES cp1251');
 	} // end of member function getConnection
 	
 	/**
@@ -110,7 +111,8 @@ class Smrt_Registry
 	public static function setRequest( \smrt\core\Smrt_Request $request ) {
 		return self::getInstance()->set("request", $request);
 	} // end of member function setRequest	
-	
+
+		
 	/**
 	 * 
 	 *
@@ -121,7 +123,74 @@ class Smrt_Registry
 	public static function getRequest( ) {
 		return self::getInstance()->get("request");
 	} // end of member function getRequest
+
+	/**
+	 * 
+	 *
+	 * @param \smrt\core\Smrt_View view 
+
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function setView( \smrt\core\Smrt_View $view ) {
+		return self::getInstance()->set("viewObject", $view);
+	} // end of member function setView		
+
+	/**
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getView( ) {
+		return self::getInstance()->get("viewObject");
+	} // end of member function getView	
+
 	
+	/**
+	 * 
+	 *
+	 * @param \smrt\core\Smrt_Controller controller 
+
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function setController( \smrt\app\controllers\Smrt_Controller $controller ) {
+		return self::getInstance()->set("controllerObject", $controller);
+	} // end of member function setView		
+
+	/**
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getController( ) {
+		return self::getInstance()->get("controllerObject");
+	} // end of member function getView	
+
+	/**
+	 * 
+	 *
+	 * @param \smrt\app\models\Smrt_Model model 
+
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function setModel( \smrt\app\models\Smrt_Model $model ) {
+		return self::getInstance()->set("modelObject", $model);
+	} // end of member function setView		
+
+	/**
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getModel( ) {
+		return self::getInstance()->get("modelObject");
+	} // end of member function getView	
+		
 	/**
 	 * 
 	 *
@@ -133,6 +202,17 @@ class Smrt_Registry
 		return self::getInstance()->get("request")->getParam( $key );
 	} // end of member function getRequest	
 
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getFormParam( $key ) {
+		return self::getInstance()->get("request")->getFormParam( $key );
+	} // end of member function getRequest	
+		
 	/**
 	 * 
 	 *
