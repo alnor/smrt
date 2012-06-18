@@ -2,7 +2,6 @@
 
 namespace smrt\app\models;
 
-require_once 'config/database.ini.php';
 
 /**
  * class Smrt_Model
@@ -35,6 +34,13 @@ abstract class Smrt_Model
 	 * @access protected
 	 */
 	protected $relation;	
+	
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $conditions=array();	
+
 
 	/**
 	 * 
@@ -57,25 +63,47 @@ abstract class Smrt_Model
 	 * @return 
 	 * @access public
 	 */
-	public function find( $conditions=array() ) {
+	public function find( $params = array( "fields"=>false, "conditions"=>array(), "order"=>false, "group"=>false, "limit"=>false ) ) {
+		print_r($params);
+		if (!$params["fields"]){		
+			$params["fields"] = array();			
+		}
 		
-		$query = "SELECT * FROM ".$this->table;
+		$this->fields = array_merge($this->fields, $params["fields"]);
+		$this->fields = (empty($this->fields)) ? "*" : join(" , ", $this->fields);
 		
-		if (!empty($conditions)){
+		$query = "SELECT ".$this->fields." FROM ".$this->table;
+		
+		if (!empty($params["conditions"])){
+			
+			$this->conditions = array_merge($this->conditions, $params["conditions"]);
+			
 			$query.= " WHERE ";
-			$keys = array_keys($conditions);
+			$keys = array_keys($this->conditions);
 
 			$cond=array();
 			
 			foreach($keys as $key=>$value){
 				$cond[] = $value."=:".$value;
-				$conditions[":".$value] = $conditions[$value];
+				$this->conditions[":".$value] = $this->conditions[$value];
 			}
 			
 			$query.= join(" AND ", $cond);
+		}		
+		
+		if ($params["group"]){
+			$query.= " GROUP BY ".$params["group"];
+		}			
+		
+		if ($params["order"]){
+			$query.= " ORDER BY ".$params["order"];
 		}
 
-		return $this->execute( $query, $conditions );
+		if ($params["limit"]){
+			$query.= " LIMIT ".$params["limit"];
+		}		
+echo $query;
+		return $this->execute( $query, $this->conditions );
 	} // end of member function find
 	
 	
@@ -139,7 +167,7 @@ abstract class Smrt_Model
 			$keys = array_keys($fields);
 			
 			$query.= join(" , ", $keys);
-			$query.= " ) VALUES (";
+			$query.= " ) VALUES ( ";
 			
 			$values=array();
 			
@@ -169,7 +197,7 @@ abstract class Smrt_Model
 
 		if (strpos($method, "findBy")!==false){
 			$field = strtolower(substr($method, 6));
-			return $this->find(array($field=>$arg[0]));
+			return $this->find(array("conditions"=>array($field=>$arg[0])));
 		}
 		
 		if (strpos($method, "update")!==false){
@@ -182,6 +210,37 @@ abstract class Smrt_Model
 		
 	} // end of member function __call	
 	
+	
+	/**
+	 * 
+	 * Магический установщик
+	 * @return 
+	 * @access public
+	 */
+	public function __set( $property, $value ) {
+		
+		$this->$property = $value;	
+		
+	} // end of member function __set	
+	
+	
+	/**
+	 * 
+	 * Магический получатель
+	 * @return 
+	 * @access public
+	 */
+	public function __get( $property ) {
+		
+		if (isset($this->$property)){
+			return $this->$property;
+		}
+		
+		return null;	
+		
+	} // end of member function __set	
+		
+		
 	/**
 	 * 
 	 * Простой запрос

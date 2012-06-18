@@ -6,6 +6,7 @@ require_once 'Smrt_Model.php';
 require_once 'Smrt_Controller.php';
 require_once 'Smrt_View.php';
 require_once 'Smrt_Exception.php';
+require_once 'Smrt_DBConfig.php';
 
 /**
  * class Smrt_FrontController

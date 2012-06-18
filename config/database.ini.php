@@ -1,43 +1,15 @@
 <?php
 
-namespace smrt\config;
-
 /**
- * class DBConfig
- * 
+ * Массив настроек для DSN
  */
-class DBConfig
-{
 
-	/** Aggregations: */
-
-	/** Compositions: */
-
-	 /*** Attributes: ***/
-
-
-	/**
-	 * 
-	 *
-	 * @return 
-	 * @access public
-	 */
-	public function get( ) {
-		
-		return array(	'driver' => 'mysql',
-						'persistent' => false,
-						'host' => 'localhost',
-						'login' => 'root',
-						'password' => 'root12',
-						'database' => 'smrt',
-						'prefix' => '',
+$db = array(	'driver' => 'mysql',
+				'persistent' => false,
+				'host' => 'localhost',
+				'login' => 'semcrm',
+				'password' => 'semcrm12',
+				'database' => 'smrt',
+				'prefix' => '',
 			);
-			
-	} // end of member function get
-
-
-
-
-
-} // end of DBConfig
 ?>

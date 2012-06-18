@@ -22,9 +22,10 @@ class ProjectsController extends Smrt_Controller
 		
 		$menu = array("/projects/result"=>"Result", "/users"=>"Users");
 		
-		$test = $this->Project->findByName("Semcrm");
+		$this->Project->fields = array("id"); 
+		$test = $this->Project->find(array("order"=>"name DESC", "group"=>"id", "limit"=>1));
 		//$test1 = $this->Project->update(array("name"=>"Smrt_sec"), array("id"=>1));
-		
+		print_r($test);
 		//$a = $this->render("result");
 
 		$this->set("menu", $menu);

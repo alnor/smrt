@@ -1,3 +1,4 @@
 .project
 .settings
 .buildpath
+config/database.ini.php
