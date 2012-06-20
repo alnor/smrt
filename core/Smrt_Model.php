@@ -28,12 +28,36 @@ abstract class Smrt_Model
 	 * @access protected
 	 */
 	protected $table;
+	
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $model;
+
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $unbinded=array();		
 		
 	/**
 	 * 
 	 * @access protected
 	 */
-	protected $relation;	
+	protected $hasOne;
+
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $hasMany;	
+	
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $belongsTo;		
 	
 	/**
 	 * 
@@ -47,13 +71,12 @@ abstract class Smrt_Model
 	 * @return 
 	 * @access public
 	 */
-	public function __construct( $table ) {
+	public function __construct( ) {
 		
 		\smrt\core\Smrt_Registry::setModel( $this );
 		
 		$this->db 		= \smrt\core\Smrt_Registry::getConnection();
-		$this->table 	= $table;
-		$this->relation	= $this->getRelation();
+
 	} // end of member function __construct	
 
 	
@@ -64,15 +87,27 @@ abstract class Smrt_Model
 	 * @access public
 	 */
 	public function find( $params = array( "fields"=>false, "conditions"=>array(), "order"=>false, "group"=>false, "limit"=>false ) ) {
-		print_r($params);
+		//print_r($params);
 		if (!$params["fields"]){		
 			$params["fields"] = array();			
 		}
 		
 		$this->fields = array_merge($this->fields, $params["fields"]);
-		$this->fields = (empty($this->fields)) ? "*" : join(" , ", $this->fields);
+		$this->fields = (empty($this->fields)) ? $this->model.".*" : join(" , ", $this->fields);
 		
-		$query = "SELECT ".$this->fields." FROM ".$this->table;
+		$query = "SELECT ".$this->fields." FROM ".$this->table." ".$this->model." ";
+		
+		if (!empty($this->belongsTo)){
+			$query .= $this->getBelongsToRelation();
+		}	
+				
+		if (!empty($this->hasOne)){
+			$query .= $this->getHasOneRelation();
+		}
+		
+		if (!empty($this->hasMany)){
+			$query .= $this->getHasManyRelation();
+		}		
 		
 		if (!empty($params["conditions"])){
 			
@@ -84,10 +119,9 @@ abstract class Smrt_Model
 			$cond=array();
 			
 			foreach($keys as $key=>$value){
-				$cond[] = $value."=:".$value;
-				$this->conditions[":".$value] = $this->conditions[$value];
+				$cond[] = $value."=?";		
 			}
-			
+
 			$query.= join(" AND ", $cond);
 		}		
 		
@@ -102,8 +136,8 @@ abstract class Smrt_Model
 		if ($params["limit"]){
 			$query.= " LIMIT ".$params["limit"];
 		}		
-echo $query;
-		return $this->execute( $query, $this->conditions );
+		//print_r($query);
+		return $this->execute( $query, array_values($this->conditions) );
 	} // end of member function find
 	
 	
@@ -275,5 +309,168 @@ echo $query;
 		
 	} // end of member function execute
 	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function setModel( $model ) {
+		$this->model = $model;
+	} // end of member function setModel
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function setTable( $table ) {
+		$this->table = $table;
+	} // end of member function setTable
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function unbind( $models ) {
+		
+		if (!is_array($models)){
+			$models = array($models);
+		}
+		
+		foreach($models as $model){
+			$this->unbinded[] = $model;
+		}	
+		
+	} // end of member function unbind	
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function is_unbinded( $model ) {
+		return in_array( $model, $this->unbinded );
+	} // end of member function unbind		
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function getHasOneRelation( ) {
+		if (!is_array($this->hasOne[0])){
+			$this->hasOne = array($this->hasOne);
+		}
+		
+		foreach($this->hasOne as $hasOne){
+			if (!isset($hasOne["model"])){
+				throw new \smrt\core\SmrtException("No model");
+			}		
+
+			if ($this->is_unbinded($hasOne["model"])){
+				continue;
+			}			
+			
+			if (!isset($hasOne["join"])){
+				$hasOne["join"] = "JOIN";
+			}
+			if (!isset($hasOne["table"])){
+				$hasOne["table"] = strtolower($hasOne["model"])."s";
+			}		
+			if (!isset($hasOne["foreign_key"])){
+				$hasOne["foreign_key"] = strtolower($this->model)."_id";
+			}						
+			$model = $hasOne["model"];
+			
+			$str .= $hasOne["join"]." ".$hasOne["table"]." as ".$hasOne["model"]." ON ".$this->model.".id = ".$hasOne["model"].".".$hasOne["foreign_key"]." ";
+			
+		}
+		
+		return $str;
+	} // end of member function getHasOneRelation	
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function getBelongsToRelation( ) {
+		if (!is_array($this->belongsTo[0])){
+			$this->belongsTo = array($this->belongsTo);
+		}
+		
+		foreach($this->belongsTo as $belongsTo){
+			if (!isset($belongsTo["model"])){
+				throw new \smrt\core\SmrtException("No model");
+			}		
+
+			if ($this->is_unbinded($belongsTo["model"])){
+				continue;
+			}			
+			
+			if (!isset($belongsTo["join"])){
+				$belongsTo["join"] = "JOIN";
+			}
+			if (!isset($belongsTo["table"])){
+				$belongsTo["table"] = strtolower($belongsTo["model"])."s";
+			}		
+			if (!isset($hasOne["foreign_key"])){
+				$belongsTo["foreign_key"] = strtolower($belongsTo["model"])."_id";
+			}						
+			$model = $belongsTo["model"];
+			
+			$str .= $belongsTo["join"]." ".$belongsTo["table"]." as ".$belongsTo["model"]." ON ".$belongsTo["model"].".id = ".$this->model.".".$belongsTo["foreign_key"]." ";
+			
+		}
+		
+		return $str;
+	} // end of member function getBelongsToRelation	
+	
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function getHasManyRelation( ) {
+		if (!is_array($this->hasMany[0])){
+			$this->hasMany = array($this->hasMany);
+		}
+		
+		foreach($this->hasMany as $hasMany){
+			if (!isset($hasMany["model"])){
+				throw new \smrt\core\SmrtException("No model");
+			}			
+			
+			if ($this->is_unbinded($hasMany["model"])){
+				continue;
+			}
+			
+			if (!isset($hasMany["join"])){
+				$hasMany["join"] = "LEFT JOIN";
+			}
+			if (!isset($hasMany["table"])){
+				$hasMany["table"] = strtolower($hasMany["model"])."s";
+			}		
+			if (!isset($hasMany["foreign_key"])){
+				$hasMany["foreign_key"] = strtolower($this->model)."_id";
+			}						
+			$model = $hasMany["model"];
+			
+			$str .= $hasMany["join"]." ".$hasMany["table"]." as ".$hasMany["model"]." ON ".$this->model.".id = ".$hasMany["model"].".".$hasMany["foreign_key"]." ";
+			
+		}
+		
+		return $str;
+	} // end of member function getHasManyRelation	
+		
 } // end of Smrt_Model
 ?>

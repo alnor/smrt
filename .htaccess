@@ -7,5 +7,6 @@ IndexIgnore */*
 RewriteEngine on
 
 #RewriteBase /
+RewriteRule ^([^.]+)/([^.]+)/([^.]+)/([^.]+)$ /index.php?controller=$1&action=$2&$3=$4 [L]
 RewriteRule ^([^.]+)/([^.]+)?$ /index.php?controller=$1&action=$2 [L]
 RewriteRule ^([^.]+)/?$ /index.php?controller=$1 [L]

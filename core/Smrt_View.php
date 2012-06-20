@@ -76,6 +76,7 @@ class Smrt_View
 				
 		$this->tpl				 = $tpl;
 		$this->currentController = \smrt\core\Smrt_Registry::getController();
+		$this->setThemeTag();
 	} // end of member function __construct
 
 	/**
@@ -160,6 +161,7 @@ class Smrt_View
 	public function setTheme( $folder, $name ) {
 		$this->themeFolder 	= $folder;
 		$this->themeName 	= $name;
+		$this->setThemeTag();
 	} // end of member function setMainTemplate	
 	
 	/**
@@ -189,6 +191,10 @@ class Smrt_View
 	 * @access public
 	 */
 	public function set( $key, $value ) {
+		if (isset($this->var[$key])){
+			$this->var[$key][] = $value;
+			return;
+		}
 		$this->var[$key] = $value;
 	} // end of member function set
 
@@ -202,6 +208,15 @@ class Smrt_View
 		$this->tag[$key] = $value;
 	} // end of member function set	
 
+	/**
+	 * Устанавливаем тег темы
+	 * @return 
+	 * @access public
+	 */
+	public function setThemeTag( ) {
+		$this->tag["{theme}"] = "/theme/".$this->themeFolder;
+	} // end of member function set	
+	
 	/**
 	 * Устанавливаем элементы
 	 * @return 

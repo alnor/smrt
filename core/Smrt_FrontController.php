@@ -7,6 +7,7 @@ require_once 'Smrt_Controller.php';
 require_once 'Smrt_View.php';
 require_once 'Smrt_Exception.php';
 require_once 'Smrt_DBConfig.php';
+require_once 'app/AppController.php';
 
 /**
  * class Smrt_FrontController
@@ -77,6 +78,7 @@ class Smrt_FrontController
 	 * @access public
 	 */
 	public function dispatch( ) {
+		try{
 		$request = new \smrt\core\Smrt_Request();
 		
 		if (is_null($request->getParam("controller"))){
@@ -104,10 +106,11 @@ class Smrt_FrontController
 		
 		$this->controller = new $class();
 		
-		try{
+		
 			print($this->invoke());
 		}catch(\smrt\core\SmrtException $e){
-			print($e->getMessage());
+			\smrt\core\Smrt_Registry::getView()->setTag("{content}", $e->getMessage());
+			print(\smrt\core\Smrt_Registry::getView()->render());
 		}
 	} // end of member function dispatch
 

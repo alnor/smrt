@@ -6,7 +6,7 @@ namespace smrt\app\controllers;
  * class ProjectsController
  * 
  */
-class ProjectsController extends Smrt_Controller
+class ProjectsController extends AppController
 {
 
 	/** Aggregations: */
@@ -20,17 +20,15 @@ class ProjectsController extends Smrt_Controller
 		
 		$this->setTitle("Title for first page");
 		
-		$menu = array("/projects/result"=>"Result", "/users"=>"Users");
-		
-		$this->Project->fields = array("id"); 
-		$test = $this->Project->find(array("order"=>"name DESC", "group"=>"id", "limit"=>1));
-		//$test1 = $this->Project->update(array("name"=>"Smrt_sec"), array("id"=>1));
-		print_r($test);
-		//$a = $this->render("result");
+		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name"); 
+		$projects = $this->Project->find();
 
-		$this->set("menu", $menu);
-		$this->set("test", $test);
-		//$this->setTag("{a}", $a);
+		$this->set("show_data", $projects);
+		$this->setTag("{zag}", "Jopa");
+		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
+										"id"	=>	"seo",
+										"name"	=>	"Search Engine Optimisation"
+									));	
 
 	}
 	
@@ -54,8 +52,25 @@ class ProjectsController extends Smrt_Controller
 	}	
 	
 	function seo(){
-		$projects = $this->Project->find(array("service_id"=>1));
-		print_r($projects);
+		$this->setView("index");
+		$this->setTag("{zag}", "JopaSeo");
+		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
+										"id"	=>	"seo",
+										"name"	=>	"Search Engine Optimisation"
+									));	
+		//$this->Project->unbind(array("Keyword", "User", "Service"));	
+		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
+		$projects = $this->Project->find(array("conditions"=>array("service_id"=>1)));
+		$this->set("show_data", $projects);
+	}	
+	
+	function view(){
+		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
+		
+		$id = $this->getParam("id");
+		
+		$project = $this->Project->find(array("conditions"=>array("Project.id"=>$id)));
+		print_r($project);
 	}	
 	
 	function new_project(){

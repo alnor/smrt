@@ -54,7 +54,11 @@ abstract class Smrt_Controller
 		if (!is_callable(array($this, $action))){
 			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_action"));
 		}
-
+		
+		if (method_exists($this, "common")){
+			$this->common();
+		}		
+		
 		$this->$action();
 		
 		return $this->view->render();
@@ -84,9 +88,25 @@ abstract class Smrt_Controller
 		}
 		
 		return false;
-	} // end of member function getParam	
+	} // end of member function post	
 
 
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function getParam( $key ) {
+		$ret = \smrt\core\Smrt_Registry::getParam($key);
+		
+		if (!is_null($ret)){
+			return $ret;
+		}
+		
+		return false;
+	} // end of member function getParam
+		
 	/**
 	 * 
 	 * Перенаправляем запросы в Smrt_View. 
@@ -133,7 +153,9 @@ abstract class Smrt_Controller
 		}
 		
 		$table =  strtolower($property)."s";
-		$this->$class = new $class( $table );
+		$this->$class = new $class( );
+		$this->$class->setModel( $property );
+		$this->$class->setTable( $table );
 		
 		return $this->$class;
 	} // end of member function __get	

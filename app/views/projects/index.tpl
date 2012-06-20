@@ -1,9 +1,3 @@
 
-<?php 
-
-	foreach($this->var["test"] as $k=>$v){
-		echo "ID:", $v["id"], "<br />";
-		echo "Name:", $v["name"], "<br />";
-	}
-?>
-{a}
+<h3>{zag}</h3>
+[element=show_data]

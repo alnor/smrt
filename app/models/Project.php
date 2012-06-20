@@ -14,14 +14,24 @@ class Project extends Smrt_Model
 	/** Compositions: */
 
 	 /*** Attributes: ***/
+	
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $belongsTo = array(	array(	"model"	=>	"User",
+											"join"	=>	"LEFT JOIN"),
+									array(	"model"	=>	"Service",
+											"join"	=>	"LEFT JOIN")
+								);
 
-
-	function getRelation(){
-		return array(	"type"	=>	"hasOne",
-						"model"	=>	"User"
-					);
-	}
-
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $hasMany = array(	"model"	=>	"Keyword"
+								);	
+					
 
 
 
