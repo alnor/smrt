@@ -82,15 +82,21 @@ abstract class Smrt_Model
 	
 	/**
 	 * 
-	 * Поиск
+	 * Поиск по таблице в базе.
+	 * Возможные аргументы метода:  "fields", "conditions", "order", "group", "limit"
+	 * @param array 
 	 * @return 
 	 * @access public
 	 */
-	public function find( $params = array( "fields"=>false, "conditions"=>array(), "order"=>false, "group"=>false, "limit"=>false ) ) {
+	public function find( $params = array( ) ) {
 		//print_r($params);
-		if (!$params["fields"]){		
+		if (!isset($params["fields"])){		
 			$params["fields"] = array();			
 		}
+		
+		if (!isset($this->fields)){		
+			$this->fields = array();			
+		}		
 		
 		$this->fields = array_merge($this->fields, $params["fields"]);
 		$this->fields = (empty($this->fields)) ? $this->model.".*" : join(" , ", $this->fields);
@@ -109,7 +115,11 @@ abstract class Smrt_Model
 			$query .= $this->getHasManyRelation();
 		}		
 		
-		if (!empty($params["conditions"])){
+		if (isset($params["conditions"])){
+
+			if (!isset($this->conditions)){		
+				$this->conditions = array();			
+			}			
 			
 			$this->conditions = array_merge($this->conditions, $params["conditions"]);
 			
@@ -125,18 +135,18 @@ abstract class Smrt_Model
 			$query.= join(" AND ", $cond);
 		}		
 		
-		if ($params["group"]){
+		if (isset($params["group"])){
 			$query.= " GROUP BY ".$params["group"];
 		}			
 		
-		if ($params["order"]){
+		if (isset($params["order"])){
 			$query.= " ORDER BY ".$params["order"];
 		}
 
-		if ($params["limit"]){
+		if (isset($params["limit"])){
 			$query.= " LIMIT ".$params["limit"];
 		}		
-		//print_r($query);
+		print_r($query);
 		return $this->execute( $query, array_values($this->conditions) );
 	} // end of member function find
 	
@@ -159,8 +169,8 @@ abstract class Smrt_Model
 			$cond=array();
 			
 			foreach($keys as $key=>$value){
-				$cond[] = $value."=:".$value;
-				$data[":".$value] = $fields[$value];
+				$cond[] = $value."=?";
+				$data[] = $fields[$value];
 			}
 			
 			$query.= join(" , ", $cond);
@@ -175,8 +185,8 @@ abstract class Smrt_Model
 			$cond=array();
 			
 			foreach($keys as $key=>$value){
-				$cond[] = $value."=:".$value;
-				$data[":".$value] = $conditions[$value];
+				$cond[] = $value."=?";
+				$data[] = $conditions[$value];
 			}
 			
 			$query.= join(" , ", $cond);
@@ -206,8 +216,8 @@ abstract class Smrt_Model
 			$values=array();
 			
 			foreach($keys as $key=>$value){
-				$values[] = ":".$value;
-				$data[":".$value] = $fields[$value];
+				$values[] = "?";
+				$data[] = $fields[$value];
 			}
 			
 			$query.= join(" , ", $values);
@@ -281,7 +291,7 @@ abstract class Smrt_Model
 	 * @return 
 	 * @access public
 	 */
-	public function query( $query, $values ) {
+	public function query( $query, $values=array() ) {
 		return $this->execute( $query, $values );		
 	} // end of member function query
 		
@@ -335,6 +345,16 @@ abstract class Smrt_Model
 	 * @return 
 	 * @access public
 	 */
+	public function getTable( ) {
+		return $this->table;
+	} // end of member function setTable
+		
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
 	public function unbind( $models ) {
 		
 		if (!is_array($models)){
@@ -367,6 +387,8 @@ abstract class Smrt_Model
 		if (!is_array($this->hasOne[0])){
 			$this->hasOne = array($this->hasOne);
 		}
+		
+		$str="";
 		
 		foreach($this->hasOne as $hasOne){
 			if (!isset($hasOne["model"])){
@@ -406,6 +428,8 @@ abstract class Smrt_Model
 			$this->belongsTo = array($this->belongsTo);
 		}
 		
+		$str="";
+		
 		foreach($this->belongsTo as $belongsTo){
 			if (!isset($belongsTo["model"])){
 				throw new \smrt\core\SmrtException("No model");
@@ -413,7 +437,7 @@ abstract class Smrt_Model
 
 			if ($this->is_unbinded($belongsTo["model"])){
 				continue;
-			}			
+			}		
 			
 			if (!isset($belongsTo["join"])){
 				$belongsTo["join"] = "JOIN";
@@ -441,9 +465,11 @@ abstract class Smrt_Model
 	 * @access public
 	 */
 	public function getHasManyRelation( ) {
-		if (!is_array($this->hasMany[0])){
+		if (!isset($this->hasMany[0])){
 			$this->hasMany = array($this->hasMany);
 		}
+		
+		$str="";
 		
 		foreach($this->hasMany as $hasMany){
 			if (!isset($hasMany["model"])){

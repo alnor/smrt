@@ -1,12 +1,12 @@
 <?php
 
-namespace smrt\app\controllers;
+namespace smrt\app\models;
 
 /**
- * class AppController
+ * class AppModel
  * 
  */
-class AppController extends Smrt_Controller
+class AppModel extends Smrt_Model
 {
 
 	/** Aggregations: */
@@ -49,9 +49,10 @@ class AppController extends Smrt_Controller
 		
 		$this->setTag("{title}", "Smrt-тестируем фреймворк");
 	}
+
 	
 
-} // end of AppController
+} // end of AppModel
 
 
 ?>

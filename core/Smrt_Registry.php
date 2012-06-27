@@ -157,6 +157,7 @@ class Smrt_Registry
 	 * @access public
 	 */
 	public static function setController( \smrt\app\controllers\Smrt_Controller $controller ) {
+		//self::getInstance()->requirePlugins($controller);
 		return self::getInstance()->set("controllerObject", $controller);
 	} // end of member function setView		
 
@@ -168,6 +169,17 @@ class Smrt_Registry
 	public static function getController( ) {
 		return self::getInstance()->get("controllerObject");
 	} // end of member function getView	
+	
+	/**
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function requirePlugins( $controller) {
+		foreach($controller->loadPlugin() as $plugin){
+			require_once SMRT_DOCUMENT_ROOT.'/modules/'.$plugin."/".$plugin.".php";
+		}
+	} // end of member function getView		
 
 	/**
 	 * 

@@ -63,6 +63,12 @@ class Smrt_View
 	 * @access public
 	 */
 	public $theme;	
+	
+	/**
+	 * Имя плагина
+	 * @access public
+	 */
+	private $moduleName;		
 
 	/**
 	 * 
@@ -91,7 +97,7 @@ class Smrt_View
 			$this->setView( $action );
 			$this->currentController->$action();
 		}
-		
+
 		$this->loadTheme();
 		$this->loadTemplate();
 
@@ -121,9 +127,9 @@ class Smrt_View
 	 */
 	public function loadTemplate( ) {
 		ob_start();
-		
+						
 		if (!file_exists($this->tpl)){
-			throw new \smrt\core\SmrtException("No action");
+			throw new \smrt\core\SmrtException($this->tpl);
 		}
 		
 		require_once $this->tpl;
@@ -174,6 +180,28 @@ class Smrt_View
 		$view = SMRT_APP_PATH."/views/".(\smrt\core\Smrt_Registry::getParam("controller"))."/".$tpl.".tpl";		
 		$this->tpl = $view;
 	} // end of member function setView
+	
+	/**
+	 * 
+	 * Устанавливаем другой шаблон подключаемого модуля
+	 * @return 
+	 * @access public
+	 */
+	public function setModuleView( $tpl ) {
+		$view = SMRT_DOCUMENT_ROOT."/modules/".$this->moduleName."/view/".$tpl.".tpl";		
+		$this->tpl = $view;
+	} // end of member function setPluginView	
+	
+	/**
+	 * 
+	 * Устанавливаем имя подгружаемого модуля
+	 * @return 
+	 * @access public
+	 */
+	public function setModuleName( $moduleName ) {	
+		$this->moduleName = $moduleName;
+		
+	} // end of member function setPluginName		
 
 	/**
 	 * Устанавливаем title

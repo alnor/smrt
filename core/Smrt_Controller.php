@@ -106,6 +106,20 @@ abstract class Smrt_Controller
 		
 		return false;
 	} // end of member function getParam
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function loadModule( $module ){
+		require_once SMRT_DOCUMENT_ROOT."/modules/".$module."/".$module.".php";
+		$moduleName = "\\smrt\\modules\\".$module;
+		$moduleObj = new $moduleName( $this );		
+		$this->setModuleName( $module );
+		return $moduleObj;
+	}	
 		
 	/**
 	 * 

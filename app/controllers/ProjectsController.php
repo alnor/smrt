@@ -6,6 +6,8 @@ namespace smrt\app\controllers;
  * class ProjectsController
  * 
  */
+use smrt\app\models\DataBrowser;
+
 class ProjectsController extends AppController
 {
 
@@ -52,16 +54,15 @@ class ProjectsController extends AppController
 	}	
 	
 	function seo(){
-		$this->setView("index");
+		//$this->setView("index");
 		$this->setTag("{zag}", "JopaSeo");
 		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
 										"id"	=>	"seo",
 										"name"	=>	"Search Engine Optimisation"
 									));	
-		//$this->Project->unbind(array("Keyword", "User", "Service"));	
-		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
-		$projects = $this->Project->find(array("conditions"=>array("service_id"=>1)));
-		$this->set("show_data", $projects);
+
+		$dataBrowser = $this->loadModule( "DataBrowser" );								
+		$dataBrowser->listView("Project", array("conditions"=>array("Project.service_id"=>1)));					
 	}	
 	
 	function view(){

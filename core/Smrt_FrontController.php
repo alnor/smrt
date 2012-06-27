@@ -5,6 +5,7 @@ require_once 'Smrt_Request.php';
 require_once 'Smrt_Model.php';
 require_once 'Smrt_Controller.php';
 require_once 'Smrt_View.php';
+require_once 'Smrt_Module.php';
 require_once 'Smrt_Exception.php';
 require_once 'Smrt_DBConfig.php';
 require_once 'app/AppController.php';
