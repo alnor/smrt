@@ -62,7 +62,8 @@ class ProjectsController extends AppController
 									));	
 
 		$dataBrowser = $this->loadModule( "DataBrowser" );								
-		$dataBrowser->listView("Project", array("conditions"=>array("Project.service_id"=>1)));					
+		$dataBrowser->listView("Project", array("conditions"=>array("Project.service_id"=>1)));		
+					
 	}	
 	
 	function view(){
