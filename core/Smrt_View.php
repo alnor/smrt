@@ -37,6 +37,12 @@ class Smrt_View
 	 * 
 	 * @access private
 	 */
+	private $defaultTpl;	
+	
+	/**
+	 * 
+	 * @access private
+	 */
 	private $currentController;	
 
 	/**
@@ -80,27 +86,37 @@ class Smrt_View
 		
 		\smrt\core\Smrt_Registry::setView( $this );
 				
-		$this->tpl				 = $tpl;
-		$this->currentController = \smrt\core\Smrt_Registry::getController();
+		$this->tpl				 	= $tpl;
+		$this->defaultTemplate		= $tpl;	
+		$this->currentController 	= \smrt\core\Smrt_Registry::getController();
 		$this->setThemeTag();
 	} // end of member function __construct
 
 	/**
+	 * Метод формирует представление.
+	 * Метод использует все установленные теги, блок темы, вьюхи и возвращает готовое представление.
 	 * 
-	 *
+	 * @param $action Если имеет значение, то шаблон вьюхи сменится на указанный
+	 * @param $theme Если имеет значение, то шаблон темы сменится на указанный
+	 * @param $block bool Если установлен в true, то после рендера - шаблон вьюхи вернется в исходное дефолтное состояние. Необходимо, когда рендер вызывается внутри рабочих методов, которым надо получить блок сторонней информации
 	 * @return 
 	 * @access public
 	 */
-	public function render( $action=null ) {
+	public function render( $action=false, $theme=true, $block=false ) {
 		
-		if (!is_null($action)){
+		if ($action){
 			$this->setView( $action );
 			$this->currentController->$action();
 		}
-
-		$this->loadTheme();
+		
 		$this->loadTemplate();
-
+		
+		if ($theme){
+			$this->loadTheme();
+		} else {
+			$this->theme = "{content}";
+		}		
+		
 		$output = str_replace('{content}', $this->view, $this->theme);	
 
 		if (strpos($output, "[element=")){
@@ -115,7 +131,11 @@ class Smrt_View
 		foreach($this->tag as $key=>$value){
 			$output = str_replace($key, $value, $output);
 		}
-		
+
+		if ($block){	
+			$this->setDefaultTemplate();
+		}		
+
 		return $output;
 	} // end of member function render
 
@@ -152,7 +172,7 @@ class Smrt_View
 			throw new \smrt\core\SmrtException("No theme");
 		}		
 		
-		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
+		require SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
 		
 		$this->theme =ob_get_contents();
 		ob_end_clean();	
@@ -172,6 +192,16 @@ class Smrt_View
 	
 	/**
 	 * 
+	 * Возвращает шаблон по умолчанию (шаблон привязанный к вызову метода)
+	 * @return 
+	 * @access public
+	 */
+	public function setDefaultTemplate( ) {
+		$this->tpl 	= $this->defaultTemplate;
+	} // end of member function setDefaultTemplate	
+		
+	/**
+	 * 
 	 * Устанавливаем другой шаблон для представления
 	 * @return 
 	 * @access public
@@ -183,7 +213,9 @@ class Smrt_View
 	
 	/**
 	 * 
-	 * Устанавливаем другой шаблон подключаемого модуля
+	 * Устанавливает шаблон подключаемого модуля.
+	 * если вызывать этот метод из метода модуля, то шаблон подхватится автоматически и будет использоваться
+	 * как основной шаблон представления  для вызываемого экшна
 	 * @return 
 	 * @access public
 	 */
@@ -246,7 +278,8 @@ class Smrt_View
 	} // end of member function set	
 	
 	/**
-	 * Устанавливаем элементы
+	 * Устанавливает вспомогательные визуальные элементы
+	 * Элементы вставляются в шаблоны с помощью конструкции [element=*]
 	 * @return 
 	 * @access public
 	 */

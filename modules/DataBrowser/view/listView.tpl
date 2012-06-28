@@ -3,13 +3,13 @@
 <?php 
 
 	foreach($this->var["columns"] as $k=>$column){
-		echo "<td>", $column["Field"], "</td>";
+		echo "<td>", $column, "</td>";
 	}	
 ?>
 	</tr>	
 	
 <?php	
-print_r($this->var["data"]);
+
 	foreach($this->var["data"] as $k=>$data){
 		foreach($data as $key=>$field){
 			echo "<td>", $field, "</td>";

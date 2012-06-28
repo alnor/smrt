@@ -23,17 +23,12 @@ class DataBrowser extends Smrt_Module
 	public function listView( $model, $params=array( )){
 		$data = $this->controller->$model->find( $params );
 		
-		$columns = isset($params["fields"]) ? $params["fields"] : false;
-		
-		if (!$columns){
-			$columns = $this->controller->$model->query("SHOW COLUMNS FROM ".$this->controller->$model->getTable());
-		}	
+		$columns = array_keys($data[0]);	
 
 		$this->controller->setModuleView("listView");
 		$this->controller->set("data", $data);
 		$this->controller->set("columns", $columns);
 	}
-
 	
 
 } // end of AppModel

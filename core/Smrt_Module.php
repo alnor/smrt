@@ -18,11 +18,12 @@ class Smrt_Module
 	 /*** Attributes: ***/
 
 	/**
-	 * 
+	 * Объект контроллера.
+	 * Содержит объект контроллера, который создает данный модуль.
 	 * @access protected
 	 */
 	protected $controller;
-	
+		
 	/**
 	 * 
 	 *
@@ -33,7 +34,18 @@ class Smrt_Module
 		$this->controller = $controller;
 	} // end of member function __construct
 	
-	
+
+	/**
+	 * Возвращает содержимое модуля.
+	 * 
+	 * Вызывается после метода модуля, который устанавливает необходимые переменные для представления.
+	 * Возвращается готовый блок представления, который используется контроллером.
+	 * @return 
+	 * @access public
+	 */	
+	public function getView( $action=false, $theme=false ){
+		return $this->controller->render( $action, $theme, true);
+	}	
 
 } // end of Smrt_Request
 ?>

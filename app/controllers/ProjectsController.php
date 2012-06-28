@@ -6,7 +6,7 @@ namespace smrt\app\controllers;
  * class ProjectsController
  * 
  */
-use smrt\app\models\DataBrowser;
+use smrt\app\modules\DataBrowser;
 
 class ProjectsController extends AppController
 {
@@ -21,16 +21,14 @@ class ProjectsController extends AppController
 	function index(){
 		
 		$this->setTitle("Title for first page");
-		
-		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name"); 
-		$projects = $this->Project->find();
-
-		$this->set("show_data", $projects);
-		$this->setTag("{zag}", "Jopa");
 		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
 										"id"	=>	"seo",
 										"name"	=>	"Search Engine Optimisation"
 									));	
+														
+		$dataBrowser = $this->loadModule( "DataBrowser" );								
+		$dataBrowser->listView("Project", array("fields"=>array("Project.name", "User.name as user_name", "Service.name as service_name"), "conditions"=>array("Project.service_id"=>1)));			
+		$this->setTag("{listView}", $dataBrowser->getView());									
 
 	}
 	
@@ -54,16 +52,15 @@ class ProjectsController extends AppController
 	}	
 	
 	function seo(){
-		//$this->setView("index");
-		$this->setTag("{zag}", "JopaSeo");
 		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
 										"id"	=>	"seo",
 										"name"	=>	"Search Engine Optimisation"
 									));	
-
+		
+		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
 		$dataBrowser = $this->loadModule( "DataBrowser" );								
-		$dataBrowser->listView("Project", array("conditions"=>array("Project.service_id"=>1)));		
-					
+		$dataBrowser->listView("Project", array("conditions"=>array("Project.service_id"=>1)));			
+		$this->setTag("{listView}", $dataBrowser->getView());		
 	}	
 	
 	function view(){

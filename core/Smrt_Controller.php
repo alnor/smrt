@@ -108,9 +108,11 @@ abstract class Smrt_Controller
 	} // end of member function getParam
 	
 	/**
-	 * 
+	 * Загружаем модуль.
+	 * Загрузка ленивая. Модуль подгружается только в случае вызова этого метода.
+	 * Устанавливает имя модуля для использования в классе Smrt_View
 	 *
-	 * @return 
+	 * @return объект модуля
 	 * @access public
 	 */
 	public function loadModule( $module ){

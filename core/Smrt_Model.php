@@ -146,7 +146,7 @@ abstract class Smrt_Model
 		if (isset($params["limit"])){
 			$query.= " LIMIT ".$params["limit"];
 		}		
-		print_r($query);
+		//print_r($query);
 		return $this->execute( $query, array_values($this->conditions) );
 	} // end of member function find
 	
@@ -315,7 +315,7 @@ abstract class Smrt_Model
 			
 		}
 		
-		return $stmt->fetchAll();
+		return $stmt->fetchAll( \PDO::FETCH_ASSOC );
 		
 	} // end of member function execute
 	
@@ -348,6 +348,17 @@ abstract class Smrt_Model
 	public function getTable( ) {
 		return $this->table;
 	} // end of member function setTable
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function getColumns( ) {
+		$ret = $this->query("SELECT * FROM information_schema.columns WHERE table_name = '".$this->table."' ");
+		return $ret;
+	} // end of member function setTable	
 		
 	/**
 	 * 
