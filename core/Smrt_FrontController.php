@@ -80,32 +80,32 @@ class Smrt_FrontController
 	 */
 	public function dispatch( ) {
 		try{
-		$request = new \smrt\core\Smrt_Request();
-		
-		if (is_null($request->getParam("controller"))){
-			$request->setParam("controller", "projects");
-			//throw new SmrtException(Smrt_LangCommon::get("error", "lost_controller"));
-		}
-		
-		if (is_null($request->getParam("action"))){
-			$request->setParam("action", "index");
-		}
-		
-		$class = "\\smrt\\app\\controllers\\".$request->getParam("controller")."Controller";
-		
-		$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
-		
-		if (!file_exists($filepath)){
-			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_path"));
-		}
-		
-		require_once($filepath);
-		
-		if (!class_exists($class)){
-			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_class"));
-		}
-		
-		$this->controller = new $class();
+			$request = new \smrt\core\Smrt_Request();
+			
+			if (is_null($request->getParam("controller"))){
+				$request->setParam("controller", "projects");
+				//throw new SmrtException(Smrt_LangCommon::get("error", "lost_controller"));
+			}
+			
+			if (is_null($request->getParam("action"))){
+				$request->setParam("action", "index");
+			}
+			
+			$class = "\\smrt\\app\\controllers\\".$request->getParam("controller")."Controller";
+			
+			$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
+			
+			if (!file_exists($filepath)){
+				throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_path"));
+			}
+			
+			require_once($filepath);
+			
+			if (!class_exists($class)){
+				throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_class"));
+			}
+			
+			$this->controller = new $class();
 		
 		
 			print($this->invoke());
