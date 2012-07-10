@@ -23,7 +23,7 @@ class ProjectsController extends \app\AppController
 		$this->setTitle("Title for first page");
 		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
 										"id"	=>	"seo",
-										"name"	=>	"Search Engine Optimisation"
+										"name"	=>	\core\Smrt_Lang::get("menu", "Search Engine Optimisation")
 									));	
 														
 		$dataBrowser = $this->loadModule( "DataBrowser" );								
