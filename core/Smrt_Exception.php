@@ -2,7 +2,7 @@
 
 namespace core;
 
-class SmrtException extends \Exception
+class Smrt_Exception extends \Exception
 {
 	
 }

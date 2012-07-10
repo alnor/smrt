@@ -21,25 +21,7 @@ abstract class Smrt_Model
 	 * @access private
 	 */
 	private $db;
-
-	
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $table;
-	
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $model;
-
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $unbinded=array();		
+		
 		
 	/**
 	 * 
@@ -57,14 +39,7 @@ abstract class Smrt_Model
 	 * 
 	 * @access protected
 	 */
-	protected $belongsTo;		
-	
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $conditions=array();	
-
+	protected $belongsTo;
 
 	/**
 	 * 
@@ -87,8 +62,8 @@ abstract class Smrt_Model
 	 * @access public
 	 */
 	public function __call( $method, $arg ) {
-		
-		$this->db->$method( $arg );
+
+		return call_user_func_array(array($this->db, $method), $arg);
 		
 		/*
 		if (is_array($arg[0])){
@@ -119,7 +94,7 @@ abstract class Smrt_Model
 	 */
 	public function __set( $property, $value ) {
 		
-		$this->$property = $value;	
+		$this->db->$property = $value;	
 		
 	} // end of member function __set	
 	
@@ -132,118 +107,53 @@ abstract class Smrt_Model
 	 */
 	public function __get( $property ) {
 		
+		return $this->db->$property;
+		/*
 		if (isset($this->$property)){
 			return $this->$property;
 		}
 		
 		return null;	
-		
+		*/
 	} // end of member function __set	
-		
-		
-	/**
-	 * 
-	 * Простой запрос
-	 * @return 
-	 * @access public
-	 */
-	public function query( $query, $values=array() ) {
-		return $this->execute( $query, $values );		
-	} // end of member function query
-		
-
-	/**
-	 * 
-	 * Извлечение
-	 * @return 
-	 * @access public
-	 */
-	public function execute( $query, $values ) {
-
-		try{
-			
-			$stmt = $this->db->prepare($query);
-			$stmt->execute($values);
-			
-		} catch(PDOException $e) {
-			
-			echo $e->getMessage();
-			
-		}
-		
-		return $stmt->fetchAll( \PDO::FETCH_ASSOC );
-		
-	} // end of member function execute
+	
 	
 	/**
 	 * 
-	 *
+	 * Возвращает отношение belongs to
 	 * @return 
 	 * @access public
 	 */
-	public function setModel( $model ) {
-		$this->model = $model;
-	} // end of member function setModel
+	public function getBelongsToRelation( ) {
+		
+		return $this->belongsTo;	
+		
+	} // end of member function getBelongsToRelation	
 	
 	/**
 	 * 
-	 *
+	 * Возвращает отношение has many
 	 * @return 
 	 * @access public
 	 */
-	public function setTable( $table ) {
-		$this->table = $table;
-	} // end of member function setTable
+	public function getHasManyRelation( ) {
+		
+		return $this->hasMany;	
+		
+	} // end of member function getHasManyRelation
 	
 	/**
 	 * 
-	 *
+	 * Возвращает отношение has one
 	 * @return 
 	 * @access public
 	 */
-	public function getTable( ) {
-		return $this->table;
-	} // end of member function setTable
-	
-	/**
-	 * 
-	 *
-	 * @return 
-	 * @access public
-	 */
-	public function getColumns( ) {
-		$ret = $this->query("SELECT * FROM information_schema.columns WHERE table_name = '".$this->table."' ");
-		return $ret;
-	} // end of member function setTable	
+	public function getHasOneRelation( ) {
 		
-	/**
-	 * 
-	 *
-	 * @return 
-	 * @access public
-	 */
-	public function unbind( $models ) {
+		return $this->hasOne;	
 		
-		if (!is_array($models)){
-			$models = array($models);
-		}
+	} // end of member function getHasOneRelation
 		
-		foreach($models as $model){
-			$this->unbinded[] = $model;
-		}	
-		
-	} // end of member function unbind	
-	
-	/**
-	 * 
-	 *
-	 * @return 
-	 * @access public
-	 */
-	public function is_unbinded( $model ) {
-		return in_array( $model, $this->unbinded );
-	} // end of member function unbind		
-
 		
 } // end of Smrt_Model
 ?>

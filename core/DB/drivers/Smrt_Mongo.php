@@ -1,12 +1,12 @@
 <?php
 
-namespace DB\drivers;
+namespace core\DB\drivers;
 
 /**
  * class Smrt_Mongo
  * 
  */
-class Smrt_Mongo extends \DB\Smrt_DB
+class Smrt_Mongo extends \core\DB\Smrt_DB
 {
 
 	/** Aggregations: */

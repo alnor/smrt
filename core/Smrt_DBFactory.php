@@ -45,10 +45,10 @@ class Smrt_DBFactory
 		switch ($this->dbConfig["driver"]){
 			case "mysqli":
 			case "mysql":
-				return new \DB\drivers\Smrt_Mysql( $this->dbConfig );
+				return new \core\DB\drivers\Smrt_Mysql( $this->dbConfig );
 				break;
 			case "mongodb":
-				return new \DB\drivers\Smrt_Mongo( $this->dbConfig );
+				return new \core\DB\drivers\Smrt_Mongo( $this->dbConfig );
 				break;
 		}
 	} // end of member function get

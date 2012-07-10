@@ -1,12 +1,12 @@
 <?php
 
-namespace DB\drivers;
+namespace core\DB\drivers;
 
 /**
  * class Smrt_Mysql
  * 
  */
-class Smrt_Mysql extends \DB\Smrt_DB
+class Smrt_Mysql extends \core\DB\Smrt_DB
 {
 
 	/** Aggregations: */
@@ -44,7 +44,6 @@ class Smrt_Mysql extends \DB\Smrt_DB
 	 * @access public
 	 */
 	public function find( $params = array( ) ) {
-		//print_r($params);
 		if (!isset($params["fields"])){		
 			$params["fields"] = array();			
 		}
@@ -303,6 +302,42 @@ class Smrt_Mysql extends \DB\Smrt_DB
 		
 		return $str;
 	} // end of member function getHasManyRelation		
+	
+		
+		
+	/**
+	 * 
+	 * Простой запрос
+	 * @return 
+	 * @access public
+	 */
+	public function query( $query, $values=array() ) {
+		return $this->execute( $query, $values );		
+	} // end of member function query
+		
+
+	/**
+	 * 
+	 * Извлечение
+	 * @return 
+	 * @access public
+	 */
+	public function execute( $query, $values ) {
+
+		try{
+			
+			$stmt = $this->db->prepare($query);
+			$stmt->execute($values);
+			
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+		
+	} // end of member function execute	
 
 } // end of Smrt_Mysql
 ?>

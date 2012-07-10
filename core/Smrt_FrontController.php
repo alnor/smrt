@@ -72,36 +72,36 @@ class Smrt_FrontController
 	 */
 	public function dispatch( ) {
 		try{
-		$request = new \core\Smrt_Request();
-		
-		if (is_null($request->getParam("controller"))){
-			$request->setParam("controller", "projects");
-			//throw new SmrtException(Smrt_LangCommon::get("error", "lost_controller"));
-		}
-		
-		if (is_null($request->getParam("action"))){
-			$request->setParam("action", "index");
-		}
-		
-		$class = "\\app\\controllers\\".$request->getParam("controller")."Controller";
-		
-		$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
-		
-		if (!file_exists($filepath)){
-			throw new \core\SmrtException(\core\Smrt_LangCommon::get("error", "lost_path"));
-		}
-		
-		require_once($filepath);
-		
-		if (!class_exists($class)){
-			throw new \core\SmrtException(\core\Smrt_LangCommon::get("error", "lost_class"));
-		}
-		
-		$this->controller = new $class();
+			$request = new \core\Smrt_Request();
+			
+			if (is_null($request->getParam("controller"))){
+				$request->setParam("controller", "projects");
+				//throw new SmrtException(Smrt_LangCommon::get("error", "lost_controller"));
+			}
+			
+			if (is_null($request->getParam("action"))){
+				$request->setParam("action", "index");
+			}
+			
+			$class = "\\app\\controllers\\".$request->getParam("controller")."Controller";
+			
+			$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
+			
+			if (!file_exists($filepath)){
+				throw new \core\Smrt_Exception(\core\Smrt_Lang::get("error", "lost_path"));
+			}
+			
+			require_once($filepath);
+			
+			if (!class_exists($class)){
+				throw new \core\Smrt_Exception(\core\Smrt_Lang::get("error", "lost_class"));
+			}
+			
+			$this->controller = new $class();
 		
 		
 			print($this->invoke());
-		}catch(\core\SmrtException $e){
+		}catch(\core\Smrt_Exception $e){
 			\core\Smrt_Registry::getView()->setTag("{content}", $e->getMessage());
 			print(\core\Smrt_Registry::getView()->render());
 		}

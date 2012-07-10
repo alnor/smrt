@@ -7,13 +7,15 @@
 	}	
 ?>
 	</tr>	
-	
+		
 <?php	
 
 	foreach($this->var["data"] as $k=>$data){
+		echo "<tr>";
 		foreach($data as $key=>$field){
 			echo "<td>", $field, "</td>";
 		}
+		echo "</tr>";
 	}
 	
 ?>

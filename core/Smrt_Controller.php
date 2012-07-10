@@ -50,7 +50,7 @@ abstract class Smrt_Controller
 		$action = \core\Smrt_Registry::getParam("action");
 
 		if (!is_callable(array($this, $action))){
-			throw new \core\SmrtException(\core\Smrt_LangCommon::get("error", "lost_action"));
+			throw new \core\Smrt_Exception(\core\Smrt_Lang::get("error", "lost_action"));
 		}
 		
 		if (method_exists($this, "common")){
@@ -131,7 +131,7 @@ abstract class Smrt_Controller
 	 */
 	public function __call( $method, $args=array() ) {
 		if (!is_callable(array($this->view, $method))){
-			throw new \core\SmrtException("No method error");
+			throw new \core\Smrt_Exception("No method error");
 		}
 				
 		return call_user_func_array(array($this->view, $method), $args);
@@ -157,21 +157,21 @@ abstract class Smrt_Controller
 		$filepath = SMRT_APP_PATH."/models/".(ucfirst($property)).".php";
 		
 		if (!file_exists($filepath)){
-			throw new \core\SmrtException(111);
+			throw new \core\Smrt_Exception(111);
 		}
 		
 		require_once $filepath;
 		
 		if (!class_exists($class)){
-			throw new \core\SmrtException(222);
+			throw new \core\Smrt_Exception(222);
 		}
 		
 		$table =  strtolower($property)."s";
-		$this->$class = new $class( );
-		$this->$class->setModel( $property );
-		$this->$class->setTable( $table );
+		$this->$property = new $class( );
+		$this->$property->setModel( $property );
+		$this->$property->setTable( $table );
 		
-		return $this->$class;
+		return $this->$property;
 	} // end of member function __get	
 	
 

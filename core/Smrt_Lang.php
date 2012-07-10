@@ -2,7 +2,7 @@
 
 namespace core;
 
-class Smrt_LangCommon 
+class Smrt_Lang 
 {
 	/**
 	 * 

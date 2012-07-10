@@ -149,7 +149,7 @@ class Smrt_View
 		ob_start();
 						
 		if (!file_exists($this->tpl)){
-			throw new \core\SmrtException($this->tpl);
+			throw new \core\Smrt_Exception($this->tpl);
 		}
 		
 		require_once $this->tpl;
@@ -169,7 +169,7 @@ class Smrt_View
 		ob_start();
 		
 		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl")){
-			throw new \core\SmrtException("No theme");
+			throw new \core\Smrt_Exception("No theme");
 		}		
 		
 		require SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
@@ -287,7 +287,7 @@ class Smrt_View
 		ob_start();
 
 		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/elements/".$element.".tpl")){
-			throw new \core\SmrtException("No element");
+			throw new \core\Smrt_Exception("No element");
 		}		
 		
 		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/elements/".$element.".tpl";

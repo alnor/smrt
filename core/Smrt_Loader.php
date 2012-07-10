@@ -15,7 +15,18 @@ class Smrt_Loader
 	 */
 	public static function loading( $class ) {
 		$path = str_replace("\\", "/", $class);
+		
+		if (!file_exists($path.".php")){
+			echo $path.".php", "<br />";
+			throw new \core\Smrt_Exception();
+		}
+		
 		require_once $path.".php";
+		
+		if (!class_exists($class)){
+			throw new \core\Smrt_Exception();	
+		}		
+		
 	} // end of member function loading
 		
 }

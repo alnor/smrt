@@ -57,16 +57,20 @@ class ProjectsController extends \app\AppController
 										"name"	=>	"Search Engine Optimisation"
 									));	
 		
-		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
+		$this->Project->fields = array("Project.name", "User.name as user_name", "Service.name as service_name", "Project.created_on");							
 		$dataBrowser = $this->loadModule( "DataBrowser" );								
 		$dataBrowser->listView("Project", array("conditions"=>array("Project.service_id"=>1)));			
 		$this->setTag("{listView}", $dataBrowser->getView());		
 	}	
 	
 	function view(){
-		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
 		
 		$id = $this->getParam("id");
+		if (!$id){
+			throw new \core\Smrt_Exception("No id");
+		}
+		
+		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
 		
 		$project = $this->Project->find(array("conditions"=>array("Project.id"=>$id)));
 		print_r($project);
