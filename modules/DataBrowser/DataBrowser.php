@@ -1,12 +1,12 @@
 <?php
 
-namespace smrt\modules;
+namespace modules;
 
 /**
  * class DataBrowser
  * 
  */
-class DataBrowser extends Smrt_Module
+class DataBrowser extends \core\Smrt_Module
 {
 
 	/** Aggregations: */

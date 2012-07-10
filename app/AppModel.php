@@ -1,12 +1,12 @@
 <?php
 
-namespace smrt\app\models;
+namespace app;
 
 /**
  * class AppModel
  * 
  */
-class AppModel extends Smrt_Model
+class AppModel extends \core\Smrt_Model
 {
 
 	/** Aggregations: */

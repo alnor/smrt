@@ -1,12 +1,12 @@
 <?php
 
-namespace smrt\modules;
+namespace core;
 
 /**
  * class Smrt_Request
  * 
  */
-use smrt\app\controllers\Smrt_Controller;
+use core\Smrt_Controller;
 
 class Smrt_Module
 {
@@ -30,7 +30,7 @@ class Smrt_Module
 	 * @return 
 	 * @access public
 	 */
-	public function __construct( \smrt\app\controllers\Smrt_Controller $controller) {
+	public function __construct( \core\Smrt_Controller $controller) {
 		$this->controller = $controller;
 	} // end of member function __construct
 	

@@ -1,8 +1,6 @@
 <?php
 
-namespace smrt\app\controllers;
-
-require_once 'Smrt_View.php';
+namespace core;
 
 /**
  * class Smrt_Controller
@@ -32,13 +30,13 @@ abstract class Smrt_Controller
 	 */
 	public function __construct( ) {
 
-		\smrt\core\Smrt_Registry::setController( $this );
+		\core\Smrt_Registry::setController( $this );
 				
-		$controller = \smrt\core\Smrt_Registry::getParam("controller");
-		$action 	= \smrt\core\Smrt_Registry::getParam("action");
+		$controller = \core\Smrt_Registry::getParam("controller");
+		$action 	= \core\Smrt_Registry::getParam("action");
 		$tpl 		= SMRT_APP_PATH."/views/".$controller."/".$action.".tpl";
 		
-		$this->view = new \smrt\core\Smrt_View( $tpl );
+		$this->view = new \core\Smrt_View( $tpl );
 	} // end of member function __construct
 
 	/**
@@ -49,10 +47,10 @@ abstract class Smrt_Controller
 	 */
 	public function getView( ) {
 		
-		$action = \smrt\core\Smrt_Registry::getParam("action");
+		$action = \core\Smrt_Registry::getParam("action");
 
 		if (!is_callable(array($this, $action))){
-			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_action"));
+			throw new \core\SmrtException(\core\Smrt_LangCommon::get("error", "lost_action"));
 		}
 		
 		if (method_exists($this, "common")){
@@ -81,7 +79,7 @@ abstract class Smrt_Controller
 	 * @access public
 	 */
 	public function post( $key ) {
-		$post = \smrt\core\Smrt_Registry::getFormParam($key);
+		$post = \core\Smrt_Registry::getFormParam($key);
 		
 		if (!is_null($post)){
 			return $post;
@@ -98,7 +96,7 @@ abstract class Smrt_Controller
 	 * @access public
 	 */
 	public function getParam( $key ) {
-		$ret = \smrt\core\Smrt_Registry::getParam($key);
+		$ret = \core\Smrt_Registry::getParam($key);
 		
 		if (!is_null($ret)){
 			return $ret;
@@ -117,7 +115,7 @@ abstract class Smrt_Controller
 	 */
 	public function loadModule( $module ){
 		require_once SMRT_DOCUMENT_ROOT."/modules/".$module."/".$module.".php";
-		$moduleName = "\\smrt\\modules\\".$module;
+		$moduleName = "\\modules\\".$module;
 		$moduleObj = new $moduleName( $this );		
 		$this->setModuleName( $module );
 		return $moduleObj;
@@ -133,7 +131,7 @@ abstract class Smrt_Controller
 	 */
 	public function __call( $method, $args=array() ) {
 		if (!is_callable(array($this->view, $method))){
-			throw new \smrt\core\SmrtException("No method error");
+			throw new \core\SmrtException("No method error");
 		}
 				
 		return call_user_func_array(array($this->view, $method), $args);
@@ -150,7 +148,7 @@ abstract class Smrt_Controller
 	 */
 	public function __get( $property ) {
 		
-		$class = "\\smrt\\app\\models\\".ucfirst($property);
+		$class = "\\app\\models\\".ucfirst($property);
 		
 		if (isset($this->$class)){
 			return $this->$class;
@@ -159,13 +157,13 @@ abstract class Smrt_Controller
 		$filepath = SMRT_APP_PATH."/models/".(ucfirst($property)).".php";
 		
 		if (!file_exists($filepath)){
-			throw new \smrt\core\SmrtException(111);
+			throw new \core\SmrtException(111);
 		}
 		
 		require_once $filepath;
 		
 		if (!class_exists($class)){
-			throw new \smrt\core\SmrtException(222);
+			throw new \core\SmrtException(222);
 		}
 		
 		$table =  strtolower($property)."s";

@@ -1,14 +1,6 @@
 <?php
 
-require_once 'Smrt_Registry.php';
-require_once 'Smrt_Request.php';
-require_once 'Smrt_Model.php';
-require_once 'Smrt_Controller.php';
-require_once 'Smrt_View.php';
-require_once 'Smrt_Module.php';
-require_once 'Smrt_Exception.php';
-require_once 'Smrt_DBConfig.php';
-require_once 'app/AppController.php';
+namespace core;
 
 /**
  * class Smrt_FrontController
@@ -80,7 +72,7 @@ class Smrt_FrontController
 	 */
 	public function dispatch( ) {
 		try{
-		$request = new \smrt\core\Smrt_Request();
+		$request = new \core\Smrt_Request();
 		
 		if (is_null($request->getParam("controller"))){
 			$request->setParam("controller", "projects");
@@ -91,27 +83,27 @@ class Smrt_FrontController
 			$request->setParam("action", "index");
 		}
 		
-		$class = "\\smrt\\app\\controllers\\".$request->getParam("controller")."Controller";
+		$class = "\\app\\controllers\\".$request->getParam("controller")."Controller";
 		
 		$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
 		
 		if (!file_exists($filepath)){
-			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_path"));
+			throw new \core\SmrtException(\core\Smrt_LangCommon::get("error", "lost_path"));
 		}
 		
 		require_once($filepath);
 		
 		if (!class_exists($class)){
-			throw new \smrt\core\SmrtException(\smrt\core\Smrt_LangCommon::get("error", "lost_class"));
+			throw new \core\SmrtException(\core\Smrt_LangCommon::get("error", "lost_class"));
 		}
 		
 		$this->controller = new $class();
 		
 		
 			print($this->invoke());
-		}catch(\smrt\core\SmrtException $e){
-			\smrt\core\Smrt_Registry::getView()->setTag("{content}", $e->getMessage());
-			print(\smrt\core\Smrt_Registry::getView()->render());
+		}catch(\core\SmrtException $e){
+			\core\Smrt_Registry::getView()->setTag("{content}", $e->getMessage());
+			print(\core\Smrt_Registry::getView()->render());
 		}
 	} // end of member function dispatch
 
@@ -124,8 +116,7 @@ class Smrt_FrontController
 	 */
 	private function invoke( ) {
 		return $this->controller->getView();
-	} // end of member function invoke
-
+	} // end of member function invoke	
 
 
 } // end of Smrt_FrontController

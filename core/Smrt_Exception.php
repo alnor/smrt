@@ -1,7 +1,10 @@
 <?php
 
-namespace smrt\core;
+namespace core;
 
-class SmrtException extends \Exception{}
+class SmrtException extends \Exception
+{
+	
+}
 
 ?>

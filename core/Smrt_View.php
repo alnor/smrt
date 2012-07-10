@@ -1,6 +1,6 @@
 <?php
 
-namespace smrt\core;
+namespace core;
 
 /**
  * class Smrt_View
@@ -84,11 +84,11 @@ class Smrt_View
 	 */
 	public function __construct( $tpl ) {
 		
-		\smrt\core\Smrt_Registry::setView( $this );
+		\core\Smrt_Registry::setView( $this );
 				
 		$this->tpl				 	= $tpl;
 		$this->defaultTemplate		= $tpl;	
-		$this->currentController 	= \smrt\core\Smrt_Registry::getController();
+		$this->currentController 	= \core\Smrt_Registry::getController();
 		$this->setThemeTag();
 	} // end of member function __construct
 
@@ -149,7 +149,7 @@ class Smrt_View
 		ob_start();
 						
 		if (!file_exists($this->tpl)){
-			throw new \smrt\core\SmrtException($this->tpl);
+			throw new \core\SmrtException($this->tpl);
 		}
 		
 		require_once $this->tpl;
@@ -169,7 +169,7 @@ class Smrt_View
 		ob_start();
 		
 		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl")){
-			throw new \smrt\core\SmrtException("No theme");
+			throw new \core\SmrtException("No theme");
 		}		
 		
 		require SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
@@ -207,7 +207,7 @@ class Smrt_View
 	 * @access public
 	 */
 	public function setView( $tpl ) {
-		$view = SMRT_APP_PATH."/views/".(\smrt\core\Smrt_Registry::getParam("controller"))."/".$tpl.".tpl";		
+		$view = SMRT_APP_PATH."/views/".(\core\Smrt_Registry::getParam("controller"))."/".$tpl.".tpl";		
 		$this->tpl = $view;
 	} // end of member function setView
 	
@@ -287,7 +287,7 @@ class Smrt_View
 		ob_start();
 
 		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/elements/".$element.".tpl")){
-			throw new \smrt\core\SmrtException("No element");
+			throw new \core\SmrtException("No element");
 		}		
 		
 		require_once SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/elements/".$element.".tpl";

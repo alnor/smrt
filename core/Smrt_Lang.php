@@ -1,6 +1,6 @@
 <?php
 
-namespace smrt\core;
+namespace core;
 
 class Smrt_LangCommon 
 {

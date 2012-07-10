@@ -1,12 +1,12 @@
 <?php
 
-namespace smrt\app\models;
+namespace app\models;
 
 /**
  * class UsersController
  * 
  */
-class Project extends Smrt_Model
+class Project extends \core\Smrt_Model
 {
 
 	/** Aggregations: */

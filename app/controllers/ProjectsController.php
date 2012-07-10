@@ -1,14 +1,14 @@
 <?php
 
-namespace smrt\app\controllers;
+namespace app\controllers;
 
 /**
  * class ProjectsController
  * 
  */
-use smrt\app\modules\DataBrowser;
+use app\modules\DataBrowser;
 
-class ProjectsController extends AppController
+class ProjectsController extends \app\AppController
 {
 
 	/** Aggregations: */

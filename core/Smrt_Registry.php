@@ -1,6 +1,6 @@
 <?php
 
-namespace smrt\core;
+namespace core;
 
 /**
  * class Smrt_Registry
@@ -93,10 +93,10 @@ class Smrt_Registry
 	 * @access public
 	 */
 	private static function setConnection( ) {
-		$db_config 			= \smrt\core\Smrt_DBConfig::get();
-		self::$dsn 			= $db_config["driver"].":dbname=".$db_config["database"].";host=".$db_config["host"];
-		self::$connection 	= new \PDO(self::$dsn, $db_config["login"], $db_config["password"]);
-		self::$connection->exec('SET NAMES utf8');
+		$db_config = \core\Smrt_DBConfig::get();
+		$factory = new \core\Smrt_DBFactory($db_config);
+		self::$connection= $factory->get();
+
 	} // end of member function getConnection
 	
 	/**
@@ -108,7 +108,7 @@ class Smrt_Registry
 	 * @static
 	 * @access public
 	 */
-	public static function setRequest( \smrt\core\Smrt_Request $request ) {
+	public static function setRequest( \core\Smrt_Request $request ) {
 		return self::getInstance()->set("request", $request);
 	} // end of member function setRequest	
 
@@ -133,7 +133,7 @@ class Smrt_Registry
 	 * @static
 	 * @access public
 	 */
-	public static function setView( \smrt\core\Smrt_View $view ) {
+	public static function setView( \core\Smrt_View $view ) {
 		return self::getInstance()->set("viewObject", $view);
 	} // end of member function setView		
 
@@ -156,7 +156,7 @@ class Smrt_Registry
 	 * @static
 	 * @access public
 	 */
-	public static function setController( \smrt\app\controllers\Smrt_Controller $controller ) {
+	public static function setController( \core\Smrt_Controller $controller ) {
 		//self::getInstance()->requirePlugins($controller);
 		return self::getInstance()->set("controllerObject", $controller);
 	} // end of member function setView		
@@ -190,7 +190,7 @@ class Smrt_Registry
 	 * @static
 	 * @access public
 	 */
-	public static function setModel( \smrt\app\models\Smrt_Model $model ) {
+	public static function setModel( \core\Smrt_Model $model ) {
 		return self::getInstance()->set("modelObject", $model);
 	} // end of member function setView		
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace smrt\core;
+namespace core;
 
 /**
  * class Smrt_Request
@@ -36,7 +36,7 @@ class Smrt_Request
 	 */
 	public function __construct( ) {
 		$this->init();
-		\smrt\core\Smrt_Registry::setRequest($this);
+		\core\Smrt_Registry::setRequest($this);
 	} // end of member function __construct
 
 	/**

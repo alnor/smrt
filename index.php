@@ -6,9 +6,9 @@
 	
 	ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.SMRT_CORE_PATH.PATH_SEPARATOR.SMRT_APP_PATH.PATH_SEPARATOR.SMRT_DOCUMENT_ROOT);
 	
-	require_once SMRT_CORE_PATH.'/Smrt_FrontController.php';
+	require_once SMRT_CORE_PATH .'/Smrt_Loader.php';
 	
-	$controller = Smrt_FrontController::getInstance();
+	$controller = \core\Smrt_FrontController::getInstance();
 	$controller->init();
 	$controller->dispatch();
 	

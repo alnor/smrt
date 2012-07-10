@@ -1,12 +1,12 @@
 <?php
 
-namespace smrt\app\controllers;
+namespace app;
 
 /**
  * class AppController
  * 
  */
-class AppController extends Smrt_Controller
+class AppController extends \core\Smrt_Controller
 {
 
 	/** Aggregations: */

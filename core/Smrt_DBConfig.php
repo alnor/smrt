@@ -1,9 +1,9 @@
 <?php
 
-namespace smrt\core;
+namespace core;
 
 /**
- * class DBConfig
+ * class Smrt_DBConfig
  * 
  */
 class Smrt_DBConfig
