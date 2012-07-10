@@ -170,16 +170,6 @@ class Smrt_Registry
 		return self::getInstance()->get("controllerObject");
 	} // end of member function getView	
 	
-	/**
-	 * @return 
-	 * @static
-	 * @access public
-	 */
-	public static function requirePlugins( $controller) {
-		foreach($controller->loadPlugin() as $plugin){
-			require_once SMRT_DOCUMENT_ROOT.'/modules/'.$plugin."/".$plugin.".php";
-		}
-	} // end of member function getView		
 
 	/**
 	 * 
