@@ -34,12 +34,20 @@ class Project extends \core\Smrt_Model
 					
 
 	function getTabsList(){
-		return array(	array(	"name"=>"Common",
-								"href"=>"projects/tb1"),
-						array(	"name"=>"Second",
-								"href"=>"projects/tb2"),
+		return array(	array(	"name"=>$this->lang("tab", "Common"),
+								"href"=>"projects/commontab"),
+						array(	"name"=>$this->lang("tab", "Second"),
+								"href"=>"projects/secondtab"),
+						array(	"name"=>$this->lang("tab", "Settings"),
+								"href"=>"projects/settingstab"),						
 					);
-	}								
+	}	
+
+	function getViewContent( $id, $dataBrowser ){
+		$this->fields = array("Project.name", "User.name as user_name", "Service.name as service_name", "Project.created_on");															
+		$dataBrowser->innerView("Project", $id);
+		return $dataBrowser->getView();		
+	}
 
 
 } // end of UsersController

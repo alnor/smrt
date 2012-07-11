@@ -9,9 +9,9 @@
 </ul>
 </div>
 <?php	
-	print_r($this->var["tabs"]);
+
 	foreach($this->var["data"] as $k=>$data){
-		print_r($data);
+
 	}
 	
 ?>

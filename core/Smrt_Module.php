@@ -8,7 +8,7 @@ namespace core;
  */
 use core\Smrt_Controller;
 
-class Smrt_Module
+class Smrt_Module extends \core\Smrt_Common
 {
 
 	/** Aggregations: */

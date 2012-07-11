@@ -8,4 +8,7 @@
 	$t["db_field"]["user_name"]="Пользователь";
 	$t["db_field"]["service_name"]="Услуга";
 	
+	$t["tab"]["Common"]="Общее";
+	$t["tab"]["Second"]="Второе";
+	$t["tab"]["Settings"]="Настройки";
 ?>

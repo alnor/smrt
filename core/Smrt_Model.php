@@ -7,7 +7,7 @@ namespace core;
  * class Smrt_Model
  * 
  */
-abstract class Smrt_Model
+abstract class Smrt_Model extends \core\Smrt_Common
 {
 
 	/** Aggregations: */

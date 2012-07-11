@@ -32,25 +32,6 @@ class ProjectsController extends \app\AppController
 
 	}
 	
-	function result(){
-		//$this->setView("index");
-		$this->setTheme("my", "second");
-		
-		$form = $this->post("form");
-		
-		if ($form){
-			
-			$this->setTag("{test}", $form["test"]);
-			$this->setTag("{name}", $form["name"]);
-			
-		} else {
-			$this->set("message", "Пустые данные формы");
-		}
-		
-		$this->setTitle("Title for result page");
-
-	}	
-	
 	function seo(){
 		$this->set("mainMenu", array(	"href"	=>	"projects/seo",
 										"id"	=>	"seo",
@@ -66,14 +47,15 @@ class ProjectsController extends \app\AppController
 	function view(){
 		
 		$id = $this->getParam("id");
+		
 		if (!$id){
 			throw new \core\Smrt_Exception("No id");
-		}						
+		}	
 		
-		$this->Project->fields = array("Project.name", "User.name as user_name", "Service.name as service_name", "Project.created_on");							
-		$dataBrowser = $this->loadModule( "DataBrowser" );								
-		$dataBrowser->innerView("Project", $id);			
-		$this->setTag("{innerView}", $dataBrowser->getView());
+		$dataBrowser = $this->loadModule( "DataBrowser" );	
+		$result = $this->Project->getViewContent( $id, $dataBrowser );
+			
+		$this->setTag("{innerView}", $result);
 	}	
 	
 	function new_project(){
@@ -83,6 +65,7 @@ class ProjectsController extends \app\AppController
 		$form = $this->post("form");
 		
 		if ($form){
+			$form["created_on"] = date("Y-m-d");
 			$this->Project->save($form);
 			$this->set("message", "Все удачно чувак");
 		}
@@ -92,6 +75,15 @@ class ProjectsController extends \app\AppController
 		return $this->Project->getTabsList();
 	}
 
+	function commontab(){
+		$this->setBlankTheme();
+	}	
+	
+	function secondtab(){
+	}		
+	
+	function settingstab(){
+	}	
 	
 } // end of ProjectsController
 ?>

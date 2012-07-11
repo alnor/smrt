@@ -6,7 +6,7 @@ namespace core;
  * class Smrt_View
  * 
  */
-class Smrt_View
+class Smrt_View extends \core\Smrt_Common
 {
 
 	/** Aggregations: */
@@ -198,7 +198,17 @@ class Smrt_View
 		$this->themeFolder 	= $folder;
 		$this->themeName 	= $name;
 		$this->setThemeTag();
-	} // end of member function setMainTemplate	
+	} // end of member function setTheme	
+	
+	/**
+	 * 
+	 * Устанавливает другой внешний шаблон для предаствления
+	 * @return 
+	 * @access public
+	 */
+	public function setBlankTheme( ) {
+		$this->theme = "{content}";
+	} // end of member function setTheme		
 	
 	/**
 	 * 

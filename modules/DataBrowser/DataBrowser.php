@@ -47,7 +47,7 @@ class DataBrowser extends \core\Smrt_Module
 		$this->controller->set("tabs", $tabs);
 	}	
 
-} // end of AppModel
+} // end of DataBrowser
 
 
 ?>

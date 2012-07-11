@@ -6,7 +6,7 @@ namespace core;
  * class Smrt_FrontController
  * 
  */
-class Smrt_FrontController
+class Smrt_FrontController extends \core\Smrt_Common
 {
 
 	/** Aggregations: */
@@ -47,16 +47,7 @@ class Smrt_FrontController
 	 */
 	public function init( ) {
 	} // end of member function init
-	
-	/**
-	 * Возвращает перевод
-	 * Простая обертка для класса Smrt_Lang.
-	 * @return 
-	 * @access public
-	 */
-	public function lang( $type, $message ) {
-		return \core\Smrt_Lang::get($type, $message);
-	} // end of member function $column	
+
 
 	/**
 	 * Синглтон

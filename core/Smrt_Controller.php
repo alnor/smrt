@@ -6,7 +6,7 @@ namespace core;
  * class Smrt_Controller
  * 
  */
-abstract class Smrt_Controller
+abstract class Smrt_Controller extends \core\Smrt_Common
 {
 
 	/** Aggregations: */
