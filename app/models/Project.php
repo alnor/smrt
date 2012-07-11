@@ -33,6 +33,13 @@ class Project extends \core\Smrt_Model
 								);	
 					
 
+	function getTabsList(){
+		return array(	array(	"name"=>"Common",
+								"href"=>"projects/tb1"),
+						array(	"name"=>"Second",
+								"href"=>"projects/tb2"),
+					);
+	}								
 
 
 } // end of UsersController

@@ -338,6 +338,7 @@ class Smrt_Mysql extends \core\DB\Smrt_DB
 		return $stmt->fetchAll( \PDO::FETCH_ASSOC );
 		
 	} // end of member function execute	
+	
 
 } // end of Smrt_Mysql
 ?>

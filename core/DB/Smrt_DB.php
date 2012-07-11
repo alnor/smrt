@@ -152,6 +152,34 @@ abstract class Smrt_DB
 		return in_array( $model, $this->unbinded );
 	} // end of member function unbind	
 	
+	
+	/**
+	 * 
+	 * Магический поиск
+	 * @return 
+	 * @access public
+	 */
+	public function __call( $method, $arg ) {
+		
+		if (is_array($arg[0])){
+			throw new \core\Smrt_Exception("Args array");
+		}		
+
+		if (strpos($method, "findBy")!==false){
+			$field = strtolower(substr($method, 6));
+			return $this->find(array("conditions"=>array($this->model.".".$field=>$arg[0])));
+		}
+		
+		if (strpos($method, "update")!==false){
+			$field = strtolower(substr($method, 6));
+			return $this->update(array($field=>$arg[0]));
+		}		
+		
+		
+		throw new \core\Smrt_Exception("No method");	
+		
+	} // end of member function __call		
+	
 
 	/**
 	 * 

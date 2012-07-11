@@ -91,6 +91,16 @@ class Smrt_View
 		$this->currentController 	= \core\Smrt_Registry::getController();
 		$this->setThemeTag();
 	} // end of member function __construct
+	
+	/**
+	 * Возвращает перевод
+	 * Простая обертка для класса Smrt_Lang.
+	 * @return 
+	 * @access public
+	 */
+	public function lang( $type, $message ) {
+		return \core\Smrt_Lang::get($type, $message);
+	} // end of member function $column		
 
 	/**
 	 * Метод формирует представление.

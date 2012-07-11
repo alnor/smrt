@@ -13,7 +13,12 @@ class Smrt_Lang
 	static function get($a, $b){
 		require 'config/config.ini.php';
 		require 'config/locales/'.$lang.".php";
-		return $t[$a][$b];
+		
+		if ($t[$a][$b]){
+			return $t[$a][$b];
+		}
+		
+		return $b;
 	}
 }
 

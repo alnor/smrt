@@ -30,7 +30,6 @@ class Smrt_FrontController
 	private static $instance;
 
 
-
 	/**
 	 * 
 	 *
@@ -48,10 +47,20 @@ class Smrt_FrontController
 	 */
 	public function init( ) {
 	} // end of member function init
+	
+	/**
+	 * Возвращает перевод
+	 * Простая обертка для класса Smrt_Lang.
+	 * @return 
+	 * @access public
+	 */
+	public function lang( $type, $message ) {
+		return \core\Smrt_Lang::get($type, $message);
+	} // end of member function $column	
 
 	/**
-	 * 
-	 *
+	 * Синглтон
+	 * Обеспечиваем единственность экземпляра
 	 * @return 
 	 * @static
 	 * @access public
@@ -65,8 +74,8 @@ class Smrt_FrontController
 	} // end of member function getInstance
 
 	/**
-	 * 
-	 *
+	 * Точка входа
+	 * Разбираем параметры, создаем необходимые экземпляры запроса и тд
 	 * @return 
 	 * @access public
 	 */
@@ -88,13 +97,13 @@ class Smrt_FrontController
 			$filepath = SMRT_APP_PATH."/controllers/".ucfirst($request->getParam("controller"))."Controller.php";
 			
 			if (!file_exists($filepath)){
-				throw new \core\Smrt_Exception(\core\Smrt_Lang::get("error", "lost_path"));
+				throw new \core\Smrt_Exception($this->lang("error", "lost_path"));
 			}
 			
 			require_once($filepath);
 			
 			if (!class_exists($class)){
-				throw new \core\Smrt_Exception(\core\Smrt_Lang::get("error", "lost_class"));
+				throw new \core\Smrt_Exception($this->lang("error", "lost_class"));
 			}
 			
 			$this->controller = new $class();
@@ -109,8 +118,8 @@ class Smrt_FrontController
 
 
 	/**
-	 * 
-	 *
+	 * Представление
+	 * Получем результат обработки запроса для вывода на экран. 
 	 * @return 
 	 * @access private
 	 */

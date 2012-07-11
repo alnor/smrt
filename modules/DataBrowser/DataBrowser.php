@@ -16,7 +16,8 @@ class DataBrowser extends \core\Smrt_Module
 	 /*** Attributes: ***/
 	
 	/**
-	 * 
+	 * Шаблон list view
+	 * Определяет общий вид в виде таблицы
 	 * @return 
 	 * @access public
 	 */	
@@ -29,7 +30,22 @@ class DataBrowser extends \core\Smrt_Module
 		$this->controller->set("data", $data);
 		$this->controller->set("columns", $columns);
 	}
-	
+
+	/**
+	 * Шаблон inner view
+	 * Определяет вид элемента
+	 * @return 
+	 * @access public
+	 */
+	public function innerView( $model, $id){
+		$data = $this->controller->$model->findById( $id );	
+
+		$tabs = $this->controller->getTabsList();
+
+		$this->controller->setModuleView("innerView");
+		$this->controller->set("data", $data);
+		$this->controller->set("tabs", $tabs);
+	}	
 
 } // end of AppModel
 

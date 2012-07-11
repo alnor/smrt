@@ -3,7 +3,7 @@
 <?php 
 
 	foreach($this->var["columns"] as $k=>$column){
-		echo "<td>", \core\Smrt_Lang::get("db_field", $column), "</td>";
+		echo "<td>", $this->lang("db_field", $column), "</td>";
 	}	
 ?>
 	</tr>	

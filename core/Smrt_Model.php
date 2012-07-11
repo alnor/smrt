@@ -62,27 +62,13 @@ abstract class Smrt_Model
 	 * @access public
 	 */
 	public function __call( $method, $arg ) {
+		
+		if (!is_array($arg)){
+			$arg = array($arg);
+		}
 
 		return call_user_func_array(array($this->db, $method), $arg);
-		
-		/*
-		if (is_array($arg[0])){
-			throw new \core\SmrtException("Args array");
-		}		
 
-		if (strpos($method, "findBy")!==false){
-			$field = strtolower(substr($method, 6));
-			return $this->find(array("conditions"=>array($field=>$arg[0])));
-		}
-		
-		if (strpos($method, "update")!==false){
-			$field = strtolower(substr($method, 6));
-			return $this->update(array($field=>$arg[0]));
-		}		
-		
-		
-		throw new \core\SmrtException("No method");	
-		*/
 	} // end of member function __call	
 	
 	

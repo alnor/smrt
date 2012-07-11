@@ -68,12 +68,12 @@ class ProjectsController extends \app\AppController
 		$id = $this->getParam("id");
 		if (!$id){
 			throw new \core\Smrt_Exception("No id");
-		}
+		}						
 		
-		$this->Project->fields = array("Project.*", "User.name as user_name", "Service.name as service_name");							
-		
-		$project = $this->Project->find(array("conditions"=>array("Project.id"=>$id)));
-		print_r($project);
+		$this->Project->fields = array("Project.name", "User.name as user_name", "Service.name as service_name", "Project.created_on");							
+		$dataBrowser = $this->loadModule( "DataBrowser" );								
+		$dataBrowser->innerView("Project", $id);			
+		$this->setTag("{innerView}", $dataBrowser->getView());
 	}	
 	
 	function new_project(){
@@ -86,6 +86,10 @@ class ProjectsController extends \app\AppController
 			$this->Project->save($form);
 			$this->set("message", "Все удачно чувак");
 		}
+	}
+	
+	function getTabsList(){
+		return $this->Project->getTabsList();
 	}
 
 	
